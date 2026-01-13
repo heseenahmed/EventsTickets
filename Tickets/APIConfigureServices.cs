@@ -1,10 +1,10 @@
-using FleetLinker.API.Filter;
-using FleetLinker.API.Localization;
-using FleetLinker.API.Middlewares;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Infra.Behaviors;
-using FleetLinker.Infra.Data;
+using Tickets.API.Filter;
+using Tickets.API.Localization;
+using Tickets.API.Middlewares;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.Entity;
+using Tickets.Infra.Behaviors;
+using Tickets.Infra.Data;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,7 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
-namespace FleetLinker.API
+namespace Tickets.API
 {
     public static class APIConfigureServices
     {
@@ -151,7 +151,7 @@ namespace FleetLinker.API
            {
                c.SwaggerDoc("v1", new OpenApiInfo
                {
-                   Title = "FleetLinker API",
+                   Title = "Tickets API",
                    Version = "v1"
                });
                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

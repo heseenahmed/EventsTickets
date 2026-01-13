@@ -1,5 +1,5 @@
 using System.Security.Claims;
-namespace FleetLinker.Domain.IRepository
+namespace Tickets.Domain.IRepository
 {
     public interface ITokenRepository
     {

@@ -1,6 +1,6 @@
-﻿using FleetLinker.Application.Common;
+using Tickets.Application.Common;
 
-namespace FleetLinker.API
+namespace Tickets.API
 {
     public static class FileHelperStartup
     {

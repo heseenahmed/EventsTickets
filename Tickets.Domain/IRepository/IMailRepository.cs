@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-namespace FleetLinker.Domain.IRepository
+namespace Tickets.Domain.IRepository
 {
     public interface IMailRepository
     {

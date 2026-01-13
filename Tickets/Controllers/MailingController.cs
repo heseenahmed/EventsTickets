@@ -1,4 +1,4 @@
-using FleetLinker.Domain.IRepository;
+using Tickets.Domain.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using SendEmailsWithDotNet5.Dtos;
 namespace SendEmailsWithDotNet5.Controllers

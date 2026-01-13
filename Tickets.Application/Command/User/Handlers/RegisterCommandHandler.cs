@@ -1,15 +1,15 @@
-using FleetLinker.Application.Common;
-using FleetLinker.Application.Common.Caching;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Application.Common.Interfaces;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.Enums;
-using FleetLinker.Domain.IRepository;
+using Tickets.Application.Common;
+using Tickets.Application.Common.Caching;
+using Tickets.Application.Common.Localization;
+using Tickets.Application.Common.Interfaces;
+using Tickets.Domain.Entity;
+using Tickets.Domain.Enums;
+using Tickets.Domain.IRepository;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FleetLinker.Application.Command.User.Handlers
+namespace Tickets.Application.Command.User.Handlers
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, bool>
     {

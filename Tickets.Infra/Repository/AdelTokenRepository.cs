@@ -1,12 +1,12 @@
-﻿
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.IRepository;
-using FleetLinker.Infra.Data;
+
+using Tickets.Domain.Entity;
+using Tickets.Domain.IRepository;
+using Tickets.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
 using System;
 
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class AdelTokenRepository:IAdelTokenRepository
     {

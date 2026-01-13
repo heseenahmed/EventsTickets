@@ -1,10 +1,10 @@
-using FleetLinker.API.Resources;
-using FleetLinker.Application.Common.Localization;
+using Tickets.API.Resources;
+using Tickets.Application.Common.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 
-namespace FleetLinker.API.Filter
+namespace Tickets.API.Filter
 {
     public class ValidateModelFilter : ActionFilterAttribute
     {

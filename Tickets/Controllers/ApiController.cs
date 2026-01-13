@@ -1,14 +1,14 @@
-using FleetLinker.API.Resources;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Application.DTOs;
+using Tickets.API.Resources;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.Entity;
+using Tickets.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
-namespace FleetLinker.API.Controllers
+namespace Tickets.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v1/[action]")]

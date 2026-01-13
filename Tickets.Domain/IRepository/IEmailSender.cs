@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace FleetLinker.Domain.IRepository
+namespace Tickets.Domain.IRepository
 {
     public  interface IEmailSender
     {

@@ -1,4 +1,4 @@
-namespace FleetLinker.API.Resources
+namespace Tickets.API.Resources
 {
     /// <summary>
     /// Marker class for IStringLocalizer. Resource files (Messages.resx, Messages.ar.resx, Messages.en.resx) 

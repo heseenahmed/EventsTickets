@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
-namespace FleetLinker.Domain.Entity
+namespace Tickets.Domain.Entity
 {
     public class BaseEntity
     {

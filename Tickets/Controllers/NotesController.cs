@@ -1,11 +1,11 @@
-﻿using FleetLinker.Application.Command.Note;
-using FleetLinker.Application.DTOs;
-using FleetLinker.Domain.Entity;
+using Tickets.Application.Command.Note;
+using Tickets.Application.DTOs;
+using Tickets.Domain.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FleetLinker.API.Controllers
+namespace Tickets.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

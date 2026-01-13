@@ -1,19 +1,19 @@
-using FleetLinker.Application.Common.Caching;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.IRepository;
-using FleetLinker.Infra.Caching;
-using FleetLinker.Infra.Data;
-using FleetLinker.Infra.Persistence;
-using FleetLinker.Infra.Repository;
-using FleetLinker.Application.Common.Interfaces;
+using Tickets.Application.Common.Caching;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.Entity;
+using Tickets.Domain.IRepository;
+using Tickets.Infra.Caching;
+using Tickets.Infra.Data;
+using Tickets.Infra.Persistence;
+using Tickets.Infra.Repository;
+using Tickets.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuestPDF.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-namespace FleetLinker.Infra
+namespace Tickets.Infra
 {
     public static class InfraConfigureServices
     {
@@ -35,7 +35,7 @@ namespace FleetLinker.Infra
                 services.AddStackExchangeRedisCache(options =>
                 {
                     options.Configuration = redisConnectionString;
-                    options.InstanceName = configuration["Redis:InstanceName"] ?? "FleetLinker:";
+                    options.InstanceName = configuration["Redis:InstanceName"] ?? "Tickets:";
                 });
             }
             else

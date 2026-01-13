@@ -1,9 +1,9 @@
-using FleetLinker.Domain.Entity;
+using Tickets.Domain.Entity;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace FleetLinker.Domain.IRepository
+namespace Tickets.Domain.IRepository
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {

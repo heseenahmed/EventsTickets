@@ -1,8 +1,8 @@
-﻿using FleetLinker.API.Resources;
-using FleetLinker.Application.Common.Localization;
+using Tickets.API.Resources;
+using Tickets.Application.Common.Localization;
 using Microsoft.Extensions.Localization;
 
-namespace FleetLinker.API.Localization
+namespace Tickets.API.Localization
 {
     public class AppLocalizer : IAppLocalizer
     {

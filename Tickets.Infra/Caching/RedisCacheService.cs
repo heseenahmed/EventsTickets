@@ -1,9 +1,9 @@
-﻿
-using FleetLinker.Application.Common.Caching;
+
+using Tickets.Application.Common.Caching;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
-namespace FleetLinker.Infra.Caching
+namespace Tickets.Infra.Caching
 {
     public class RedisCacheService : ICacheService
     {

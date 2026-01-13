@@ -1,10 +1,10 @@
-﻿
-using FleetLinker.Application.DTOs;
-using FleetLinker.Domain.IRepository;
+
+using Tickets.Application.DTOs;
+using Tickets.Domain.IRepository;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace FleetLinker.Application.Command.Note
+namespace Tickets.Application.Command.Note
 {
     public class NoteCommandHandler : IRequestHandler<CreateNoteCommand, APIResponse<Domain.Entity.Note>>
     {

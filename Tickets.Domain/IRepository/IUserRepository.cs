@@ -1,7 +1,7 @@
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.Models;
+using Tickets.Domain.Entity;
+using Tickets.Domain.Models;
 
-namespace FleetLinker.Domain.IRepository
+namespace Tickets.Domain.IRepository
 {
     public interface IUserRepository
     {

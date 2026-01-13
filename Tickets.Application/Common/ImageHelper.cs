@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-namespace FleetLinker.Application.Common
+namespace Tickets.Application.Common
 {
     public static class ImageHelper
     {

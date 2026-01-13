@@ -1,4 +1,4 @@
-namespace FleetLinker.Application.DTOs.User
+namespace Tickets.Application.DTOs.User
 {
     public class GetUserDto
     {

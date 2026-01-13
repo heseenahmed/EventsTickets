@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FleetLinker.Domain.Enums
+namespace Tickets.Domain.Enums
 {
     public enum Roles
     {

@@ -1,11 +1,11 @@
 using AutoMapper;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.Models;
-using FleetLinker.Domain.IRepository;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.Entity;
+using Tickets.Domain.Models;
+using Tickets.Domain.IRepository;
 using MediatR;
 
-namespace FleetLinker.Application.Command.Roles
+namespace Tickets.Application.Command.Roles
 {
     public class RoleCommandHandler :
         IRequestHandler<AddRoleCommand, bool>,

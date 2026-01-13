@@ -1,13 +1,13 @@
 using DocumentFormat.OpenXml.Math;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Infra.Configuration;
+using Tickets.Domain.Entity;
+using Tickets.Domain.Entity;
+using Tickets.Infra.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
 using System.Reflection.Emit;
-namespace FleetLinker.Infra.Data
+namespace Tickets.Infra.Data
 {
     public class ApplicationDbContext : IdentityDbContext<
         ApplicationUser, ApplicationRole, string,

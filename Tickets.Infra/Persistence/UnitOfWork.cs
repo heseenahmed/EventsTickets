@@ -1,8 +1,8 @@
-using FleetLinker.Application.Common.Interfaces;
-using FleetLinker.Infra.Data;
+using Tickets.Application.Common.Interfaces;
+using Tickets.Infra.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace FleetLinker.Infra.Persistence
+namespace Tickets.Infra.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {

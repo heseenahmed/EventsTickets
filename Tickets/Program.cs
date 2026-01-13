@@ -1,8 +1,8 @@
-using FleetLinker.API;
-using FleetLinker.API.Middlewares;
-using FleetLinker.Application;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Infra;
+using Tickets.API;
+using Tickets.API.Middlewares;
+using Tickets.Application;
+using Tickets.Domain.Entity;
+using Tickets.Infra;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,13 +18,13 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c => 
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "FleetLinker API V1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tickets API V1");
     c.RoutePrefix = string.Empty; // Serve Swagger UI at the root (/)
     c.DisplayRequestDuration();
 });
 
 // Fallback for root URL to ensure something is served
-app.MapGet("/health", () => Results.Ok("FleetLinker API is running"));
+app.MapGet("/health", () => Results.Ok("Tickets API is running"));
 
 FileHelperStartup.Configure(app); 
 

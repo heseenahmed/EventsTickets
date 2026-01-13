@@ -1,12 +1,12 @@
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.Models;
-using FleetLinker.Domain.IRepository;
-using FleetLinker.Infra.Data;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.Entity;
+using Tickets.Domain.Models;
+using Tickets.Domain.IRepository;
+using Tickets.Infra.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class RoleRepository : IRoleRepository
     {

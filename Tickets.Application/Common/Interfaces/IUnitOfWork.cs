@@ -1,5 +1,5 @@
 
-namespace FleetLinker.Application.Common.Interfaces
+namespace Tickets.Application.Common.Interfaces
 {
     public interface IUnitOfWork
     {

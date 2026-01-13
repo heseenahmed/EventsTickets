@@ -1,12 +1,12 @@
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.IRepository;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.Entity;
+using Tickets.Domain.IRepository;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class TokenRepository : ITokenRepository
     {

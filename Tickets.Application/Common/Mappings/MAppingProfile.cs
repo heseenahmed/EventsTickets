@@ -1,6 +1,6 @@
 using AutoMapper;
 using System.Reflection;
-namespace FleetLinker.Application.Common.Mappings
+namespace Tickets.Application.Common.Mappings
 {
     public class MappingProfile : Profile
     {

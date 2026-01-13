@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-namespace FleetLinker.Application.DTOs.Identity
+namespace Tickets.Application.DTOs.Identity
 {
     public class UpdateUserDto
     {

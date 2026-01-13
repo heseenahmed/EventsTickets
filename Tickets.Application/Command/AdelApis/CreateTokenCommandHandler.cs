@@ -1,9 +1,9 @@
-﻿
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.IRepository;
+
+using Tickets.Domain.Entity;
+using Tickets.Domain.IRepository;
 using MediatR;
 
-namespace FleetLinker.Application.Command.AdelApis
+namespace Tickets.Application.Command.AdelApis
 {
     public class CreateTokenCommandHandler : IRequestHandler<CreateTokenCommand, List<Tokens>>
     {

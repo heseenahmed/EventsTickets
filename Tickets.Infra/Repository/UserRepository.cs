@@ -1,13 +1,13 @@
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.Models;
-using FleetLinker.Domain.IRepository;
-using FleetLinker.Infra.Data;
-using FleetLinker.Application.Common;
+using Tickets.Domain.Entity;
+using Tickets.Domain.Models;
+using Tickets.Domain.IRepository;
+using Tickets.Infra.Data;
+using Tickets.Application.Common;
 using Microsoft.EntityFrameworkCore;
-using FleetLinker.Application.Common.Localization;
+using Tickets.Application.Common.Localization;
 using System.Data;
 
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class UserRepository : IUserRepository
     {

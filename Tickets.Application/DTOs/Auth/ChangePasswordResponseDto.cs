@@ -1,4 +1,4 @@
-namespace FleetLinker.Application.DTOs.Auth
+namespace Tickets.Application.DTOs.Auth
 {
     public class ChangePasswordResponseDto
     {

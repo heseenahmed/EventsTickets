@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-namespace FleetLinker.Application.DTOs.Identity
+namespace Tickets.Application.DTOs.Identity
 {
     public class UserForRegisterDto
     {

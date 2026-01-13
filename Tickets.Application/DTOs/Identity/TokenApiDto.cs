@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using FleetLinker.Domain.Enums;
-namespace FleetLinker.Application.DTOs.Identity
+using Tickets.Domain.Enums;
+namespace Tickets.Application.DTOs.Identity
 {
     public class TokenApiDto
     {

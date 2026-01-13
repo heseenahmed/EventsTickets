@@ -1,11 +1,11 @@
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.IRepository;
+using Tickets.Domain.Entity;
+using Tickets.Domain.IRepository;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit.Text;
 using MimeKit;
 using MailKit.Net.Smtp;
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class MailSender : IEmailSender
     {

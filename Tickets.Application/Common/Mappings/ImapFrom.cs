@@ -1,5 +1,5 @@
 using AutoMapper;
-namespace FleetLinker.Application.Common.Mappings
+namespace Tickets.Application.Common.Mappings
 {
     public interface ImapFrom<T>
     {

@@ -1,10 +1,10 @@
-﻿
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.IRepository;
-using FleetLinker.Infra.Data;
+
+using Tickets.Domain.Entity;
+using Tickets.Domain.IRepository;
+using Tickets.Infra.Data;
 using System;
 
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class NoteRepository:INoteRepository
     {

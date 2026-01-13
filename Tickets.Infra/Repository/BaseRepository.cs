@@ -1,10 +1,10 @@
-using FleetLinker.Domain.IRepository;
-using FleetLinker.Infra.Data;
+using Tickets.Domain.IRepository;
+using Tickets.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {

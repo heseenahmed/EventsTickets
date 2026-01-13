@@ -1,7 +1,7 @@
-using FleetLinker.Domain.Entity;
+using Tickets.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-namespace FleetLinker.Infra.Configuration
+namespace Tickets.Infra.Configuration
 {
     public class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
     {

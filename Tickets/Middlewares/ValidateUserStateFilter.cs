@@ -1,11 +1,11 @@
-﻿using FleetLinker.Domain.Entity;
+using Tickets.Domain.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace FleetLinker.API.Middlewares
+namespace Tickets.API.Middlewares
 {
     public class ValidateUserStateFilter : IAsyncAuthorizationFilter
     {

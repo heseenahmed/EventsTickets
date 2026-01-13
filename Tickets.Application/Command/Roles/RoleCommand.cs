@@ -1,8 +1,8 @@
-using FleetLinker.Application.Command.Core;
-using FleetLinker.Domain.Models;
+using Tickets.Application.Command.Core;
+using Tickets.Domain.Models;
 using MediatR;
 
-namespace FleetLinker.Application.Command.Roles
+namespace Tickets.Application.Command.Roles
 {
     public abstract class RoleCommand : Commands
     {

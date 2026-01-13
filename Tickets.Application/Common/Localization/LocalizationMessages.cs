@@ -1,6 +1,6 @@
 using Humanizer;
 
-namespace FleetLinker.Application.Common.Localization
+namespace Tickets.Application.Common.Localization
 {
     /// <summary>
     /// Contains message keys for localization. Use with IStringLocalizer.

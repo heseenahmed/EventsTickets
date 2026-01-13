@@ -1,5 +1,5 @@
-﻿
-namespace FleetLinker.Application.Common.Localization
+
+namespace Tickets.Application.Common.Localization
 {
     public interface IAppLocalizer
     {

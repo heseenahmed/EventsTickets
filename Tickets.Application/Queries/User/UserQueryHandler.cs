@@ -1,11 +1,11 @@
 using AutoMapper;
-using FleetLinker.Application.DTOs.Identity;
-using FleetLinker.Domain.IRepository;
-using FleetLinker.Application.DTOs.User;
-using FleetLinker.Domain.Models;
+using Tickets.Application.DTOs.Identity;
+using Tickets.Domain.IRepository;
+using Tickets.Application.DTOs.User;
+using Tickets.Domain.Models;
 using MediatR;
-using FleetLinker.Application.Common.Caching;
-namespace FleetLinker.Application.Queries.User
+using Tickets.Application.Common.Caching;
+namespace Tickets.Application.Queries.User
 {
     public class UserQueryHandler :
         IRequestHandler<GetUserInfoAsyncCommand, UserInfoAPI?>,

@@ -1,9 +1,9 @@
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.IRepository;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.IRepository;
 using MediatR;
 using System.Security.Claims;
 
-namespace FleetLinker.Application.Command.User.Handlers
+namespace Tickets.Application.Command.User.Handlers
 {
     public class GetPrincipalFromExpiredTokenCommandHandler : IRequestHandler<GetPrincipalFromExpiredTokenCommand, ClaimsPrincipal>
     {

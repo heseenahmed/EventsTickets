@@ -1,5 +1,5 @@
-﻿
-namespace FleetLinker.Application.DTOs.AdelApis
+
+namespace Tickets.Application.DTOs.AdelApis
 {
     public class ReturnTokensDto
     {

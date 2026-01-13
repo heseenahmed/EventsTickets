@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using System.Net;
-namespace FleetLinker.Application.DTOs
+namespace Tickets.Application.DTOs
 {
     public class APIResponse<T>
     {

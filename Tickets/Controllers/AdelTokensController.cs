@@ -1,10 +1,10 @@
-﻿using FleetLinker.Application.Command.AdelApis;
-using FleetLinker.Domain.Entity;
+using Tickets.Application.Command.AdelApis;
+using Tickets.Domain.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FleetLinker.API.Controllers
+namespace Tickets.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,6 +1,6 @@
 using FluentValidation;
 using MediatR;
-namespace FleetLinker.Infra.Behaviors
+namespace Tickets.Infra.Behaviors
 {
     public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {

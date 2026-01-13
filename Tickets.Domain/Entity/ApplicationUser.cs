@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
-using FleetLinker.Domain.Enums;
-namespace FleetLinker.Domain.Entity
+using Tickets.Domain.Enums;
+namespace Tickets.Domain.Entity
 {
     public class ApplicationUser : IdentityUser
     {

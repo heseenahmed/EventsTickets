@@ -1,13 +1,13 @@
-using FleetLinker.Application.Command.Core;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Application.DTOs;
-using FleetLinker.Application.DTOs.Identity;
-using FleetLinker.Application.DTOs.User;
-using FleetLinker.Domain.Models;
+using Tickets.Application.Command.Core;
+using Tickets.Domain.Entity;
+using Tickets.Application.DTOs;
+using Tickets.Application.DTOs.Identity;
+using Tickets.Application.DTOs.User;
+using Tickets.Domain.Models;
 using MediatR;
 using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
-namespace FleetLinker.Application.Command.User
+namespace Tickets.Application.Command.User
 {
     public class UpdateUserAsyncCommand : IRequest<bool> 
     {

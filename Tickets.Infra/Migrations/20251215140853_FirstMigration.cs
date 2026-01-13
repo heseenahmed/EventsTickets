@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FleetLinker.Infra.Migrations
+namespace Tickets.Infra.Migrations
 {
     /// <inheritdoc />
     public partial class FirstMigration : Migration

@@ -1,12 +1,12 @@
-﻿using FleetLinker.API.Controllers;
-using FleetLinker.API.Resources;
-using FleetLinker.Application.Command.User;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Application.DTOs;
-using FleetLinker.Application.DTOs.Identity;
-using FleetLinker.Domain.Models;
-using FleetLinker.Application.Common;
-using FleetLinker.Application.DTOs.Auth;
+using Tickets.API.Controllers;
+using Tickets.API.Resources;
+using Tickets.Application.Command.User;
+using Tickets.Domain.Entity;
+using Tickets.Application.DTOs;
+using Tickets.Application.DTOs.Identity;
+using Tickets.Domain.Models;
+using Tickets.Application.Common;
+using Tickets.Application.DTOs.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +17,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using FleetLinker.Application.Common.Localization;
+using Tickets.Application.Common.Localization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -130,12 +130,12 @@ public class AuthController : ApiController
         if (!result.Succeeded)
             throw new InvalidOperationException(
                 string.Join("; ", result.Errors.Select(e => e.Description)));
-        // 🔐 VERY IMPORTANT
+        // ?? VERY IMPORTANT
         await _userManager.UpdateSecurityStampAsync(user);
         user.FirstTimeLogin = false;
         await _userManager.UpdateAsync(user);
         var roles = await _userManager.GetRolesAsync(user);
-        // ✅ Generate token AFTER password change
+        // ? Generate token AFTER password change
         var accessToken = TokenGenerator.GenerateAccessToken(
             user,
             roles,

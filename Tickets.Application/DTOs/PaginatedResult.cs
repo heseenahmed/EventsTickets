@@ -1,4 +1,4 @@
-namespace FleetLinker.Application.DTOs
+namespace Tickets.Application.DTOs
 {
     public class PaginatedResult<T>
     {

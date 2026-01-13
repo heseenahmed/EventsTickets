@@ -1,11 +1,11 @@
-using FleetLinker.API.Resources;
-using FleetLinker.Application.Command.Roles;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Application.Queries.Roles;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Application.DTOs;
-using FleetLinker.Application.DTOs.Identity;
-using FleetLinker.Domain.Models;
+using Tickets.API.Resources;
+using Tickets.Application.Command.Roles;
+using Tickets.Application.Common.Localization;
+using Tickets.Application.Queries.Roles;
+using Tickets.Domain.Entity;
+using Tickets.Application.DTOs;
+using Tickets.Application.DTOs.Identity;
+using Tickets.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
-namespace FleetLinker.API.Controllers
+namespace Tickets.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

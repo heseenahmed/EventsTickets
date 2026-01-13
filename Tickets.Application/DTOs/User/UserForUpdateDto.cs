@@ -1,4 +1,4 @@
-namespace FleetLinker.Application.DTOs.Identity
+namespace Tickets.Application.DTOs.Identity
 {
     public class UserForUpdateDto
     {

@@ -1,8 +1,8 @@
 using AutoMapper;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Application.DTOs.Identity;
-using FleetLinker.Application.DTOs.User;
-namespace FleetLinker.Application.Common.Mappings
+using Tickets.Domain.Entity;
+using Tickets.Application.DTOs.Identity;
+using Tickets.Application.DTOs.User;
+namespace Tickets.Application.Common.Mappings
 {
     public class UserProfile : Profile
     {

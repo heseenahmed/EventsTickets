@@ -1,8 +1,8 @@
 using AutoMapper;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Application.DTOs.Identity;
-using FleetLinker.Domain.Models;
-namespace FleetLinker.Application.Common.Mappings
+using Tickets.Domain.Entity;
+using Tickets.Application.DTOs.Identity;
+using Tickets.Domain.Models;
+namespace Tickets.Application.Common.Mappings
 {
     public class RoleProfile :Profile
     {

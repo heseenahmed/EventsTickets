@@ -1,4 +1,4 @@
-namespace FleetLinker.Domain.Models
+namespace Tickets.Domain.Models
 {
     public sealed class UpdateUserRolesResult
     {

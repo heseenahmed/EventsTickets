@@ -1,7 +1,7 @@
-﻿
-using FleetLinker.Domain.Entity;
 
-namespace FleetLinker.Domain.IRepository
+using Tickets.Domain.Entity;
+
+namespace Tickets.Domain.IRepository
 {
     public interface IAdelTokenRepository
     {

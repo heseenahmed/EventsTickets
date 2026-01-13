@@ -1,10 +1,10 @@
-using FleetLinker.Application.Common.Mappings;
-using FleetLinker.Infra.Behaviors;
+using Tickets.Application.Common.Mappings;
+using Tickets.Infra.Behaviors;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-namespace FleetLinker.Application
+namespace Tickets.Application
 {
     public static class AppConfigureServices
     {

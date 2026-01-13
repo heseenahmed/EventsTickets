@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Net;
-namespace FleetLinker.Application.Common
+namespace Tickets.Application.Common
 {
     public static class IFileHelper
     {

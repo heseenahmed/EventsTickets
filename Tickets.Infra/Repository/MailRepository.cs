@@ -1,12 +1,12 @@
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.IRepository;
+using Tickets.Application.Common.Localization;
+using Tickets.Domain.Entity;
+using Tickets.Domain.IRepository;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MimeKit;
-namespace FleetLinker.Infra.Repository
+namespace Tickets.Infra.Repository
 {
     public class MailRepository :IMailRepository
     {

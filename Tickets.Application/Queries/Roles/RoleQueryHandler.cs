@@ -1,10 +1,10 @@
 using AutoMapper;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Application.DTOs.Identity;
-using FleetLinker.Domain.IRepository;
+using Tickets.Domain.Entity;
+using Tickets.Application.DTOs.Identity;
+using Tickets.Domain.IRepository;
 using MediatR;
 using System.Linq;
-namespace FleetLinker.Application.Queries.Roles.Queries
+namespace Tickets.Application.Queries.Roles.Queries
 {
     public class GetRoleQueryHandler : IRequestHandler<GetRoleList, IEnumerable<ApplicationRole>>
     {

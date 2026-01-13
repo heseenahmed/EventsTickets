@@ -1,14 +1,14 @@
-using FleetLinker.Application.Common;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Application.DTOs;
-using FleetLinker.Application.DTOs.Identity;
+using Tickets.Application.Common;
+using Tickets.Application.Common.Localization;
+using Tickets.Application.DTOs;
+using Tickets.Application.DTOs.Identity;
 using Microsoft.Extensions.Options;
-using FleetLinker.Domain.Entity;
+using Tickets.Domain.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FleetLinker.Application.Command.User.Handlers
+namespace Tickets.Application.Command.User.Handlers
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, APIResponse<LoginResponseDto>>
     {

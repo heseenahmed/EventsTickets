@@ -1,6 +1,6 @@
-using FleetLinker.API.Resources;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Application.DTOs;
+using Tickets.API.Resources;
+using Tickets.Application.Common.Localization;
+using Tickets.Application.DTOs;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 using System.Net;
 using System.Text.Json;
 
-namespace FleetLinker.API.Middlewares;
+namespace Tickets.API.Middlewares;
 
 public class GlobalExceptionHandlingMiddleware : IMiddleware
 {

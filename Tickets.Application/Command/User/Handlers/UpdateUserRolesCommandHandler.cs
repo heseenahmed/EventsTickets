@@ -1,13 +1,13 @@
-using FleetLinker.Application.Common.Caching;
-using FleetLinker.Application.Common.Localization;
-using FleetLinker.Application.DTOs.User;
-using FleetLinker.Domain.Entity;
-using FleetLinker.Domain.Models;
-using FleetLinker.Domain.IRepository;
+using Tickets.Application.Common.Caching;
+using Tickets.Application.Common.Localization;
+using Tickets.Application.DTOs.User;
+using Tickets.Domain.Entity;
+using Tickets.Domain.Models;
+using Tickets.Domain.IRepository;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace FleetLinker.Application.Command.User.Handlers
+namespace Tickets.Application.Command.User.Handlers
 {
     public class UpdateUserRolesCommandHandler : IRequestHandler<UpdateUserRolesCommand, UpdateUserRolesResult>
     {

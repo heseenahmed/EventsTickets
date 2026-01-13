@@ -1,5 +1,5 @@
-﻿
-namespace FleetLinker.Application.Common.Caching
+
+namespace Tickets.Application.Common.Caching
 {
     public interface ICacheService
     {

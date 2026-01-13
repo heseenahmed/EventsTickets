@@ -1,5 +1,5 @@
-﻿
-namespace FleetLinker.Domain.Entity
+
+namespace Tickets.Domain.Entity
 {
     public class Tokens
     {
