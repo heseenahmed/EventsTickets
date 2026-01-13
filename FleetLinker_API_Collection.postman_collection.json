@@ -1,0 +1,633 @@
+{
+	"info": {
+		"_postman_id": "fleetlinker-api-collection",
+		"name": "FleetLinker API - Localization Testing",
+		"description": "Complete API collection for FleetLinker with Arabic (default) and English localization testing.\n\n**How to use:**\n1. Set the `baseUrl` variable to your API URL\n2. For Arabic responses (default): No special header needed\n3. For English responses: Set `Accept-Language: en` header\n\n**Variables:**\n- `baseUrl`: API base URL (e.g., https://localhost:7xxx)\n- `accessToken`: JWT access token after login\n- `refreshToken`: Refresh token after login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7000",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "🌐 Localization Tests",
+			"description": "Test endpoints in both Arabic (default) and English",
+			"item": [
+				{
+					"name": "Login - Arabic Response (Default)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is in Arabic', function () {",
+									"    var jsonData = pm.response.json();",
+									"    // Check if message contains Arabic characters",
+									"    pm.expect(jsonData.msg).to.match(/[\\u0600-\\u06FF]/);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"invalid_user\",\n    \"password\": \"invalid_password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Auth", "login"]
+						},
+						"description": "Test login with invalid credentials - expects Arabic error message (default language)"
+					},
+					"response": []
+				},
+				{
+					"name": "Login - English Response",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is in English', function () {",
+									"    var jsonData = pm.response.json();",
+									"    // Check if message does NOT contain Arabic characters",
+									"    pm.expect(jsonData.msg).to.not.match(/[\\u0600-\\u06FF]/);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": "Request English response"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"invalid_user\",\n    \"password\": \"invalid_password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Auth", "login"]
+						},
+						"description": "Test login with invalid credentials - expects English error message"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles - Arabic Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is in Arabic', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.msg).to.match(/[\\u0600-\\u06FF]/);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Roles/GetAllRoles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Roles", "GetAllRoles"]
+						},
+						"description": "Test unauthorized access - expects Arabic error"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles - English Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response is in English', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.msg).to.not.match(/[\\u0600-\\u06FF]/);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/Roles/GetAllRoles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Roles", "GetAllRoles"]
+						},
+						"description": "Test unauthorized access - expects English error"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔐 Authentication",
+			"description": "Auth endpoints: Login, Logout, Password management, Token refresh",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data) {",
+									"        pm.collectionVariables.set('accessToken', jsonData.data.accessToken);",
+									"        pm.collectionVariables.set('refreshToken', jsonData.data.refreshToken);",
+									"        pm.collectionVariables.set('userId', jsonData.data.userId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"your_username\",\n    \"password\": \"your_password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Auth", "login"]
+						},
+						"description": "Login and get access token"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Auth", "logout"]
+						},
+						"description": "Logout current user"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"oldPassword\": \"current_password\",\n    \"newPassword\": \"new_password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/change-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Auth", "change-password"]
+						},
+						"description": "Change user password"
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Password (Forgot Password)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mobile\": \"+966xxxxxxxxx\",\n    \"password\": \"new_password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/AddNewPassword",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Auth", "AddNewPassword"]
+						},
+						"description": "Set new password for user (forgot password flow)"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data) {",
+									"        pm.collectionVariables.set('accessToken', jsonData.data.accessToken);",
+									"        pm.collectionVariables.set('refreshToken', jsonData.data.refreshToken);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accessToken\": \"{{accessToken}}\",\n    \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/refresh",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Auth", "refresh"]
+						},
+						"description": "Refresh expired access token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👤 User Management",
+			"description": "User CRUD operations",
+			"item": [
+				{
+					"name": "Register New User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"mobile\": \"+966xxxxxxxxx\",\n    \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/UserManager/RegisterNewUser",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "UserManager", "RegisterNewUser"]
+						},
+						"description": "Register a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/UserManager/GetAll",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "UserManager", "GetAll"]
+						},
+						"description": "Get list of all users"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/UserManager/GetById/{{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "UserManager", "GetById", "{{userId}}"]
+						},
+						"description": "Get user details by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{userId}}\",\n    \"fullName\": \"Updated Name\",\n    \"email\": \"updated@example.com\",\n    \"mobile\": \"+966xxxxxxxxx\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/UserManager/Update?id={{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "UserManager", "Update"],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{userId}}"
+								}
+							]
+						},
+						"description": "Update user information"
+					},
+					"response": []
+				},
+				{
+					"name": "Switch User Active Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/UserManager/SwitchUserActive/{{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "UserManager", "SwitchUserActive", "{{userId}}"]
+						},
+						"description": "Toggle user active/inactive status"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/UserManager/DeleteUser/{{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "UserManager", "DeleteUser", "{{userId}}"]
+						},
+						"description": "Soft delete a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Roles",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"roles\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/UserManager/UpdateUserRoles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "UserManager", "UpdateUserRoles"]
+						},
+						"description": "Update user's assigned roles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🎭 Roles",
+			"description": "Role management endpoints",
+			"item": [
+				{
+					"name": "Get All Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Roles/GetAllRoles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Roles", "GetAllRoles"]
+						},
+						"description": "Get list of all roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"NewRole\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Roles/AddNewRole",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Roles", "AddNewRole"]
+						},
+						"description": "Add a new role"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Roles/DeleteRole/roleName?roleName=RoleToDelete",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Roles", "DeleteRole", "roleName"],
+							"query": [
+								{
+									"key": "roleName",
+									"value": "RoleToDelete"
+								}
+							]
+						},
+						"description": "Delete a role by name"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📧 Mailing",
+			"description": "Email endpoints",
+			"item": [
+				{
+					"name": "Send Email",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "toEmail",
+									"value": "recipient@example.com",
+									"type": "text"
+								},
+								{
+									"key": "subject",
+									"value": "Test Subject",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "Test email body",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Mailing/send",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Mailing", "send"]
+						},
+						"description": "Send an email"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Welcome Email",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"Test User\",\n    \"email\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Mailing/welcome",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "Mailing", "welcome"]
+						},
+						"description": "Send welcome email to user"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
