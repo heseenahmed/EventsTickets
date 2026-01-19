@@ -35,6 +35,7 @@ namespace Tickets.Domain.IRepository
         IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> GetListAsync();
+        IQueryable<TEntity> GetAllQueryable();
         #endregion
         #region Save_Dis
         int Save();

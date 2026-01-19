@@ -348,4 +348,19 @@
   <data name="SomeRolesDoNotExist" xml:space="preserve">
     <value>بعض من الادوار غير مجوده</value>
   </data>
+  <data name="EventCreatedSuccessfully" xml:space="preserve">
+    <value>تم إنشاء الفعالية بنجاح.</value>
+  </data>
+  <data name="EventUpdatedSuccessfully" xml:space="preserve">
+    <value>تم تحديث الفعالية بنجاح.</value>
+  </data>
+  <data name="EventDeletedSuccessfully" xml:space="preserve">
+    <value>تم حذف الفعالية بنجاح.</value>
+  </data>
+  <data name="EventRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع الفعالية بنجاح.</value>
+  </data>
+  <data name="EventsRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع الفعاليات بنجاح.</value>
+  </data>
 </root>

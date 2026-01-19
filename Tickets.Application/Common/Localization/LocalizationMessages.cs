@@ -106,5 +106,12 @@ namespace Tickets.Application.Common.Localization
         public const string ApplicationError = "ApplicationError";
         public const string ServerError = "ServerError";
         public const string UnexpectedErrorOccurred = "UnexpectedErrorOccurred";
+
+        // Events
+        public const string EventCreatedSuccessfully = "EventCreatedSuccessfully";
+        public const string EventUpdatedSuccessfully = "EventUpdatedSuccessfully";
+        public const string EventDeletedSuccessfully = "EventDeletedSuccessfully";
+        public const string EventRetrievedSuccessfully = "EventRetrievedSuccessfully";
+        public const string EventsRetrievedSuccessfully = "EventsRetrievedSuccessfully";
     }
 }

@@ -20,7 +20,7 @@ namespace Tickets.Application.Command.User
         }
     }
     public sealed record GetPrincipalFromExpiredTokenCommand(string? Token) : IRequest<ClaimsPrincipal>;
-    public class RegisterCommand : IRequest<bool>
+    public class RegisterCommand : IRequest<APIResponse<bool>>
     {
         public UserForRegisterDto userDto{set;get;}
         public string? PerformedBy{set;get;}

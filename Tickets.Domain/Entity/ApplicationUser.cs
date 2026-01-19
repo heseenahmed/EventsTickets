@@ -27,6 +27,7 @@ namespace Tickets.Domain.Entity
         public bool FirstTimeLogin { get; set; }
         [DefaultValue(false)]
         public bool IsOTPEnabled { get; set; }
+        public int NumberOfDependants { get; set; }
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; } = new List<ApplicationUserRole>();
     }
     public class ApplicationUserRole : IdentityUserRole<string>

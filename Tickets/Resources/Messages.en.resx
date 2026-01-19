@@ -348,4 +348,19 @@
   <data name="SomeRolesDoNotExist" xml:space="preserve">
     <value>Some Roles Do Not Exist</value>
   </data>
+  <data name="EventCreatedSuccessfully" xml:space="preserve">
+    <value>Event created successfully.</value>
+  </data>
+  <data name="EventUpdatedSuccessfully" xml:space="preserve">
+    <value>Event updated successfully.</value>
+  </data>
+  <data name="EventDeletedSuccessfully" xml:space="preserve">
+    <value>Event deleted successfully.</value>
+  </data>
+  <data name="EventRetrievedSuccessfully" xml:space="preserve">
+    <value>Event retrieved successfully.</value>
+  </data>
+  <data name="EventsRetrievedSuccessfully" xml:space="preserve">
+    <value>Events retrieved successfully.</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tickets.Infra.Data;
 
@@ -11,9 +12,11 @@ using Tickets.Infra.Data;
 namespace Tickets.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260119120732_UpdateRegisteration")]
+    partial class UpdateRegisteration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,24 +263,6 @@ namespace Tickets.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AttendeeEmail")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("AttendeeImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AttendeeName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("AttendeePhone")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
@@ -291,9 +276,6 @@ namespace Tickets.Infra.Migrations
                     b.Property<int>("CurrentEntries")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -303,7 +285,7 @@ namespace Tickets.Infra.Migrations
                     b.Property<int>("MaxEntries")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumberOfVisitors")
+                    b.Property<int>("NumberOfDependants")
                         .HasColumnType("int");
 
                     b.Property<string>("QrCodeData")
@@ -312,6 +294,7 @@ namespace Tickets.Infra.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("StudentId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("TotalPrice")
@@ -325,75 +308,9 @@ namespace Tickets.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
-
                     b.HasIndex("StudentId");
 
                     b.ToTable("Bookings", (string)null);
-                });
-
-            modelBuilder.Entity("Tickets.Domain.Entity.Event", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AvailableNumberOfVisitors")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EventDetails")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("NumberOfVisitorsAllowed")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TermsOfEntries")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("Tickets.Domain.Entity.Note", b =>
@@ -476,18 +393,11 @@ namespace Tickets.Infra.Migrations
 
             modelBuilder.Entity("Tickets.Domain.Entity.Booking", b =>
                 {
-                    b.HasOne("Tickets.Domain.Entity.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Tickets.Domain.Entity.ApplicationUser", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Event");
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Student");
                 });

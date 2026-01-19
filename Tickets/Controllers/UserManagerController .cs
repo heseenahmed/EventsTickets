@@ -46,8 +46,8 @@ namespace Tickets.API.Controllers
                 throw new ValidationException(_localizer[LocalizationMessages.BodyRequired]);
             var performedBy = User?.Identity?.Name ?? "System";
             
-            var success = await _mediator.Send(new RegisterCommand(model, performedBy), ct);
-            return Ok(APIResponse<bool>.Success(success, _localizer[LocalizationMessages.UserRegisteredSuccessfully]));
+            var result = await _mediator.Send(new RegisterCommand(model, performedBy), ct);
+            return Ok(result);
         }
         #endregion
 

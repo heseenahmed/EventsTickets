@@ -50,8 +50,9 @@ namespace Tickets.Infra
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICacheService, RedisCacheService>();
-            services.AddScoped<IAdelTokenRepository, AdelTokenRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }

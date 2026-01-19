@@ -58,6 +58,10 @@ namespace Tickets.Infra.Repository
         {
             return await _dbSet.ToListAsync();
         }
+        public IQueryable<TEntity> GetAllQueryable()
+        {
+            return _dbSet.AsQueryable();
+        }
         #endregion
         #region Add
         public int Add(TEntity entity)
