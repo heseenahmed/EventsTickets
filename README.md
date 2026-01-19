@@ -1,4 +1,8 @@
 # Event Management & Ticketing System
+![Banner](https://img.shields.io/badge/Status-In--Progress-orange?style=for-the-badge)
+![.NET 9](https://img.shields.io/badge/.NET-9.0-blue?style=for-the-badge&logo=dotnet)
+![Clean Architecture](https://img.shields.io/badge/Architecture-Clean-green?style=for-the-badge)
+![Saudi Arabia](https://img.shields.io/badge/Market-Saudi--Arabia-darkgreen?style=for-the-badge)
 
 A high-performance, scalable solution built with **.NET 9** and **Clean Architecture**, designed to manage large-scale events, graduation parties, and conferences with seamless booking and visitor tracking.
 
