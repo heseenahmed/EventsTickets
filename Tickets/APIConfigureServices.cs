@@ -61,7 +61,7 @@ namespace Tickets.API
             {
                 options.AddPolicy("MyPolicy", policy => 
                 { 
-                    policy.WithOrigins("http://localhost:4200") // TODO: Add production domains
+                    policy.WithOrigins("http://localhost:4200" , "https://tikcktat.vercel.app") // TODO: Add production domains
                           .AllowAnyMethod()
                           .AllowAnyHeader()
                           .AllowCredentials(); 

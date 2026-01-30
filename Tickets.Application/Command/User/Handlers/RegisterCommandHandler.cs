@@ -16,17 +16,20 @@ namespace Tickets.Application.Command.User.Handlers
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, APIResponse<bool>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IAppLocalizer _localizer;
         private readonly ICacheService _cache;
         private readonly IUnitOfWork _uow;
 
         public RegisterCommandHandler(
             UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager,
             IAppLocalizer localizer,
             ICacheService cache,
             IUnitOfWork uow)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _localizer = localizer;
             _cache = cache;
             _uow = uow;
@@ -37,6 +40,11 @@ namespace Tickets.Application.Command.User.Handlers
             var dto = request.userDto;
             if (dto == null)
                 return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, new List<string> { _localizer[LocalizationMessages.RegistrationPayloadRequired] });
+
+            // Validate role exists
+            var role = await _roleManager.FindByIdAsync(dto.RoleId);
+            if (role == null)
+                return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, new List<string> { _localizer[LocalizationMessages.RoleNotFound] });
 
             // Business Validation
             var normalizedEmail = dto.Email.Trim().ToUpperInvariant();
@@ -72,6 +80,15 @@ namespace Tickets.Application.Command.User.Handlers
                     return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, errors, _localizer[LocalizationMessages.FailedToCreateUser]);
                 }
 
+                // Assign role to user
+                var roleResult = await _userManager.AddToRoleAsync(user, role.Name!);
+                if (!roleResult.Succeeded)
+                {
+                    await _uow.RollbackAsync();
+                    var errors = roleResult.Errors.Select(e => e.Description).ToList();
+                    return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, errors, _localizer[LocalizationMessages.ErrorAddingRole]);
+                }
+
                 await _uow.CommitAsync();
                 await _cache.RemoveAsync(CacheKeys.UsersAll, cancellationToken);
                 return APIResponse<bool>.Success(true, _localizer[LocalizationMessages.UserRegisteredSuccessfully]);
@@ -84,3 +101,4 @@ namespace Tickets.Application.Command.User.Handlers
         }
     }
 }
+

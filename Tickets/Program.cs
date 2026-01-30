@@ -3,6 +3,7 @@ using Tickets.API.Middlewares;
 using Tickets.Application;
 using Tickets.Domain.Entity;
 using Tickets.Infra;
+using Tickets.Infra.Data;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ builder.Services.AddInfraServices(builder.Configuration, builder.Environment);
 builder.Services.AddAPIServices(builder.Configuration);
 
 var app = builder.Build();
+
+// Seed roles
+await DbSeeder.SeedRolesAsync(app.Services);
 
 // Enable Swagger in all environments (including Production)
 app.UseSwagger();
