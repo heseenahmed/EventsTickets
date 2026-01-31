@@ -1,10 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using Tickets.Domain.Enums;
 using Microsoft.AspNetCore.Http;
+using Tickets.Application.Common.Mappings;
+using Tickets.Domain.Entity;
+
 
 namespace Tickets.Application.DTOs.Event
 {
-    public class EventDto
+    public class EventDto : ImapFrom<Tickets.Domain.Entity.Event>
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;

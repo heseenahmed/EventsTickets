@@ -2,8 +2,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tickets.Application.Command.Event;
+using Tickets.Application.Command.EventOwner;
 using Tickets.Application.Queries.Event;
+using Tickets.Application.Queries.EventOwner;
 using Tickets.Application.DTOs.Event;
+using Tickets.Application.DTOs.EventOwner;
 using Tickets.Domain.Enums;
 using Tickets.Domain.Models;
 using Tickets.Application.DTOs;
@@ -74,6 +77,31 @@ namespace Tickets.API.Controllers
             var result = await _mediator.Send(new EventCheckoutCommand(model, studentId, baseUrl));
             return Ok(result);
         }
+
+        #region Event Owner Endpoints
+
+        [HttpPost("AssignEventToOwner")]
+        public async Task<IActionResult> AssignEventToOwner([FromBody] AssignEventToOwnerRequest request)
+        {
+            var result = await _mediator.Send(new AssignEventToOwnerCommand(request.UserId, request.EventId));
+            return Ok(result);
+        }
+
+        [HttpGet("GetAllEventOwners")]
+        public async Task<IActionResult> GetAllEventOwners()
+        {
+            var result = await _mediator.Send(new GetAllEventOwnersQuery());
+            return Ok(APIResponse<List<EventOwnerDto>>.Success(result, _localizer[LocalizationMessages.EventOwnersRetrievedSuccessfully]));
+        }
+
+        [HttpGet("GetEventsByOwner/{userId}")]
+        public async Task<IActionResult> GetEventsByOwner(string userId)
+        {
+            var result = await _mediator.Send(new GetEventsByOwnerQuery(userId));
+            return Ok(APIResponse<List<EventDto>>.Success(result, _localizer[LocalizationMessages.EventsByOwnerRetrievedSuccessfully]));
+        }
+
+        #endregion
 
         //[HttpGet("GetGraduationEvents")]
         //public async Task<IActionResult> GetGraduationEvents()

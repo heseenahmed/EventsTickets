@@ -30,5 +30,9 @@ namespace Tickets.Domain.Entity
         public string? TermsOfEntries { get; set; }
 
         public EventType Type { get; set; }
+
+        // Event Owner relationship
+        public string? OwnerId { get; set; }
+        public virtual ApplicationUser? Owner { get; set; }
     }
 }

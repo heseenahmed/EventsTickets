@@ -113,5 +113,12 @@ namespace Tickets.Application.Common.Localization
         public const string EventDeletedSuccessfully = "EventDeletedSuccessfully";
         public const string EventRetrievedSuccessfully = "EventRetrievedSuccessfully";
         public const string EventsRetrievedSuccessfully = "EventsRetrievedSuccessfully";
+        public const string EventNotFound = "EventNotFound";
+
+        // Event Owner
+        public const string UserIsNotEventOwner = "UserIsNotEventOwner";
+        public const string EventAssignedToOwnerSuccessfully = "EventAssignedToOwnerSuccessfully";
+        public const string EventOwnersRetrievedSuccessfully = "EventOwnersRetrievedSuccessfully";
+        public const string EventsByOwnerRetrievedSuccessfully = "EventsByOwnerRetrievedSuccessfully";
     }
 }

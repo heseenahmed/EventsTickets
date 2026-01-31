@@ -129,5 +129,20 @@ namespace Tickets.Infra.Repository
         // RegisterAsync, UpdateUserAsync, SwitchUserActiveAsync, SoftDeleteUserAsync
         // Since these are wrapper around UserManager, we prefer calling UserManager in Handlers
         // to stay closer to Identity framework and allow Handlers to orchestrate cross-cutting concerns.
+
+        public async Task<List<ApplicationUser>> GetUsersByRoleAsync(string roleName, CancellationToken ct = default)
+        {
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(r => r.NormalizedName == roleName.ToUpperInvariant(), ct);
+
+            if (role == null)
+                return new List<ApplicationUser>();
+
+            return await _context.Users
+                .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+                .Include(u => u.OwnedEvents)
+                .Where(u => !u.IsDeleted && u.UserRoles.Any(ur => ur.RoleId == role.Id))
+                .ToListAsync(ct);
+        }
     }
 }

@@ -363,4 +363,16 @@
   <data name="EventsRetrievedSuccessfully" xml:space="preserve">
     <value>Events retrieved successfully.</value>
   </data>
+  <data name="UserIsNotEventOwner" xml:space="preserve">
+    <value>This user is not an event owner.</value>
+  </data>
+  <data name="EventAssignedToOwnerSuccessfully" xml:space="preserve">
+    <value>Event assigned to owner successfully.</value>
+  </data>
+  <data name="EventOwnersRetrievedSuccessfully" xml:space="preserve">
+    <value>Event owners retrieved successfully.</value>
+  </data>
+  <data name="EventsByOwnerRetrievedSuccessfully" xml:space="preserve">
+    <value>Events by owner retrieved successfully.</value>
+  </data>
 </root>

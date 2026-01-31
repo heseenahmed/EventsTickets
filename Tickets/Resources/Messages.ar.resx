@@ -363,4 +363,16 @@
   <data name="EventsRetrievedSuccessfully" xml:space="preserve">
     <value>تم استرجاع الفعاليات بنجاح.</value>
   </data>
+  <data name="UserIsNotEventOwner" xml:space="preserve">
+    <value>هذا المستخدم ليس منظم فعاليات.</value>
+  </data>
+  <data name="EventAssignedToOwnerSuccessfully" xml:space="preserve">
+    <value>تم تعيين الفعالية للمنظم بنجاح.</value>
+  </data>
+  <data name="EventOwnersRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع منظمي الفعاليات بنجاح.</value>
+  </data>
+  <data name="EventsByOwnerRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع فعاليات المنظم بنجاح.</value>
+  </data>
 </root>

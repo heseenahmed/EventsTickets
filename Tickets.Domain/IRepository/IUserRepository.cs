@@ -9,5 +9,6 @@ namespace Tickets.Domain.IRepository
         Task<ApplicationUser?> GetByIdAsync(string id);
         Task<List<ApplicationUser>> GetAllAsync();
         Task<UpdateUserRolesResult> UpdateUserRolesAsync(string userId, IEnumerable<Guid> roleIds, CancellationToken ct = default);
+        Task<List<ApplicationUser>> GetUsersByRoleAsync(string roleName, CancellationToken ct = default);
     }
 }
