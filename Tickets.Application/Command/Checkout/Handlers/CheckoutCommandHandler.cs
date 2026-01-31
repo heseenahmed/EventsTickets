@@ -52,7 +52,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
 
             if (eventEntity.AvailableNumberOfVisitors < requiredVisitors)
             {
-                return APIResponse<string>.Fail(400, null, "Not enough available tickets.");
+                return APIResponse<string>.Fail(400, null, _localizer[LocalizationMessages.NotEnoughTickets]);
             }
 
             string? attendeeImageUrl = null;
@@ -88,18 +88,8 @@ namespace Tickets.Application.Command.Checkout.Handlers
             try
             {
                 var qrLink = $"https://tikcktat.vercel.app/qrcode/{ticket.QrToken}";
-                var subject = $"Welcome to {eventEntity.Name}!";
-                var message = $@"
-                    <html>
-                        <body>
-                            <h1>Welcome to {eventEntity.Name}!</h1>
-                            <p>Hi {ticket.AttendeeName},</p>
-                            <p>Thank you for choosing our event. We are excited to have you with us!</p>
-                            <p>You can access your QR code for entry by clicking the link below:</p>
-                            <p><a href='{qrLink}'>{qrLink}</a></p>
-                            <p>See you there!</p>
-                        </body>
-                    </html>";
+                var subject = string.Format(_localizer[LocalizationMessages.EmailSubjectWelcome], eventEntity.Name);
+                var message = string.Format(_localizer[LocalizationMessages.EmailBodyWelcomeTemplate], eventEntity.Name, ticket.AttendeeName, qrLink);
 
                 await _emailSender.SendEmailAsync(
                     _mailSettings.Host,
@@ -118,7 +108,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 // Log exception if needed, but don't fail the checkout if email fails
             }
 
-            return APIResponse<string>.Success(ticket.QrToken, "Checkout successful. An email has been sent to you with your QR code.");
+            return APIResponse<string>.Success(ticket.QrToken, _localizer[LocalizationMessages.CheckoutSuccessfulWithEmail]);
         }
     }
 }

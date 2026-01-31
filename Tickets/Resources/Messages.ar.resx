@@ -375,4 +375,25 @@
   <data name="EventsByOwnerRetrievedSuccessfully" xml:space="preserve">
     <value>تم استرجاع فعاليات المنظم بنجاح.</value>
   </data>
+  <data name="NotEnoughTickets" xml:space="preserve">
+    <value>لا يوجد عدد كافٍ من التذاكر المتاحة.</value>
+  </data>
+  <data name="CheckoutSuccessfulWithEmail" xml:space="preserve">
+    <value>تمت عملية الدفع بنجاح. تم إرسال بريد إلكتروني إليك يحتوي على رمز QR الخاص بك.</value>
+  </data>
+  <data name="InvalidQrCode" xml:space="preserve">
+    <value>رمز QR غير صالح.</value>
+  </data>
+  <data name="QrCodeLimitReached" xml:space="preserve">
+    <value>لقد وصل رمز QR إلى الحد الأقصى لعدد مرات المسح.</value>
+  </data>
+  <data name="QrCodeValidatedSuccessfully" xml:space="preserve">
+    <value>تم التحقق من رمز QR بنجاح.</value>
+  </data>
+  <data name="EmailSubjectWelcome" xml:space="preserve">
+    <value>مرحباً بك في {0}!</value>
+  </data>
+  <data name="EmailBodyWelcomeTemplate" xml:space="preserve">
+    <value>&lt;html&gt;&lt;body&gt;&lt;h1&gt;مرحباً بك في {0}!&lt;/h1&gt;&lt;p&gt;مرحباً {1}،&lt;/p&gt;&lt;p&gt;شكراً لاختيارك فعاليتنا. نحن متحمسون لوجودك معنا!&lt;/p&gt;&lt;p&gt;يمكنك الوصول إلى رمز QR الخاص بك للدخول من خلال النقر على الرابط أدناه:&lt;/p&gt;&lt;p&gt;&lt;a href='{2}'&gt;{2}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;نراك هناك!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</value>
+  </data>
 </root>

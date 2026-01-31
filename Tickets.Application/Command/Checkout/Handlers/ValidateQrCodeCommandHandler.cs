@@ -29,12 +29,12 @@ namespace Tickets.Application.Command.Checkout.Handlers
 
             if (ticket == null)
             {
-                return APIResponse<TicketDto>.Fail(404, null, "Invalid QR Code.");
+                return APIResponse<TicketDto>.Fail(404, null, _localizer[LocalizationMessages.InvalidQrCode]);
             }
 
             if (ticket.ScannedCount >= ticket.MaxScans)
             {
-                return APIResponse<TicketDto>.Fail(400, null, "QR Code has reached its maximum scan limit.");
+                return APIResponse<TicketDto>.Fail(400, null, _localizer[LocalizationMessages.QrCodeLimitReached]);
             }
 
             // Increment scan count
@@ -55,7 +55,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 EventName = ticket.Event?.Name ?? "N/A"
             };
 
-            return APIResponse<TicketDto>.Success(dto, "QR Code validated successfully.");
+            return APIResponse<TicketDto>.Success(dto, _localizer[LocalizationMessages.QrCodeValidatedSuccessfully]);
         }
     }
 }

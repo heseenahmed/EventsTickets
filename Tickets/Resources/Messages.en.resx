@@ -375,4 +375,25 @@
   <data name="EventsByOwnerRetrievedSuccessfully" xml:space="preserve">
     <value>Events by owner retrieved successfully.</value>
   </data>
+  <data name="NotEnoughTickets" xml:space="preserve">
+    <value>Not enough available tickets.</value>
+  </data>
+  <data name="CheckoutSuccessfulWithEmail" xml:space="preserve">
+    <value>Checkout successful. An email has been sent to you with your QR code.</value>
+  </data>
+  <data name="InvalidQrCode" xml:space="preserve">
+    <value>Invalid QR Code.</value>
+  </data>
+  <data name="QrCodeLimitReached" xml:space="preserve">
+    <value>QR Code has reached its maximum scan limit.</value>
+  </data>
+  <data name="QrCodeValidatedSuccessfully" xml:space="preserve">
+    <value>QR Code validated successfully.</value>
+  </data>
+  <data name="EmailSubjectWelcome" xml:space="preserve">
+    <value>Welcome to {0}!</value>
+  </data>
+  <data name="EmailBodyWelcomeTemplate" xml:space="preserve">
+    <value>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Welcome to {0}!&lt;/h1&gt;&lt;p&gt;Hi {1},&lt;/p&gt;&lt;p&gt;Thank you for choosing our event. We are excited to have you with us!&lt;/p&gt;&lt;p&gt;You can access your QR code for entry by clicking the link below:&lt;/p&gt;&lt;p&gt;&lt;a href='{2}'&gt;{2}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;See you there!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</value>
+  </data>
 </root>
