@@ -53,6 +53,7 @@ namespace Tickets.Infra
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }

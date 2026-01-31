@@ -83,5 +83,6 @@ namespace Tickets.Infra.Data
         public virtual DbSet<Note> Note { get; set; }
         public virtual DbSet<Booking> Bookings { get; set; }
         public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
     }
 }
