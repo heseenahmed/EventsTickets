@@ -13,6 +13,8 @@ using Tickets.Application.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Tickets.Domain.Entity;
 using Tickets.Application.Common.Localization;
+using Tickets.Application.DTOs.Checkout;
+using Tickets.Application.Query.Checkout;
 
 namespace Tickets.API.Controllers
 {
@@ -68,13 +70,10 @@ namespace Tickets.API.Controllers
             return Ok(APIResponse<List<EventDto>>.Success(result, _localizer[LocalizationMessages.EventsRetrievedSuccessfully]));
         }
 
-        [HttpPost("Checkout")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Checkout([FromForm] EventCheckoutDto model)
+        [HttpGet("{eventId}/attendees")]
+        public async Task<ActionResult<APIResponse<IEnumerable<AttendeeDto>>>> GetAttendees(Guid eventId)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}";
-            var studentId = User?.Identity?.IsAuthenticated == true ? loggedInUserId : null;
-            var result = await _mediator.Send(new EventCheckoutCommand(model, studentId, baseUrl));
+            var result = await _mediator.Send(new GetTicketsByEventIdQuery(eventId));
             return Ok(result);
         }
 

@@ -20,5 +20,12 @@ namespace Tickets.Infra.Repository
                 .Include(t => t.Event)
                 .FirstOrDefaultAsync(t => t.QrToken == qrToken, ct);
         }
+        public async Task<IEnumerable<Ticket>> GetByEventIdAsync(Guid eventId, CancellationToken ct)
+        {
+            return await _context.Tickets
+                .Include(t => t.Event)
+                .Where(t => t.EventId == eventId)
+                .ToListAsync(ct);
+        }
     }
 }

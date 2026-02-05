@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Tickets.Domain.Entity;
 using Tickets.Application.Common.Localization;
+using Tickets.Application.Query.Checkout;
 
 namespace Tickets.Controllers
 {
