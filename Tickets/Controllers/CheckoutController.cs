@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Tickets.Domain.Entity;
 using Tickets.Application.Common.Localization;
 using Tickets.Application.Query.Checkout;
+using Microsoft.AspNetCore.Cors;
 
 namespace Tickets.Controllers
 {
@@ -35,6 +36,7 @@ namespace Tickets.Controllers
 
         [HttpPost("validateQr/{token}")]
         [AllowAnonymous]
+        [EnableCors("AllowAll")]
         public async Task<ActionResult<APIResponse<TicketDto>>> ValidateQr(string token)
         {
             var result = await _mediator.Send(new ValidateQrCodeCommand(token));

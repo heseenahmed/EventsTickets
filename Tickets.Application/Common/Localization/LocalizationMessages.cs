@@ -127,6 +127,7 @@ namespace Tickets.Application.Common.Localization
         public const string InvalidQrCode = "InvalidQrCode";
         public const string QrCodeLimitReached = "QrCodeLimitReached";
         public const string QrCodeValidatedSuccessfully = "QrCodeValidatedSuccessfully";
+        public const string AlreadyRegistered = "AlreadyRegistered";
         public const string EmailSubjectWelcome = "EmailSubjectWelcome";
         public const string EmailBodyWelcomeTemplate = "EmailBodyWelcomeTemplate";
     }

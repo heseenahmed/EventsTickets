@@ -15,6 +15,7 @@ using Tickets.Domain.Entity;
 using Tickets.Application.Common.Localization;
 using Tickets.Application.DTOs.Checkout;
 using Tickets.Application.Query.Checkout;
+using Tickets.Application.Common.Interfaces;
 
 namespace Tickets.API.Controllers
 {
@@ -23,9 +24,45 @@ namespace Tickets.API.Controllers
     //[Authorize]
     public class EventsController : ApiController
     {
-        public EventsController(ISender mediator, UserManager<ApplicationUser> userManager, IAppLocalizer localizer) 
+        private readonly IExcelService _excelService;
+
+        public EventsController(ISender mediator, UserManager<ApplicationUser> userManager, IAppLocalizer localizer, IExcelService excelService) 
             : base(mediator, userManager, localizer)
         {
+            _excelService = excelService;
+        }
+
+        [HttpGet("GetAllEvents/download-excel")]
+        [AllowAnonymous]
+        public async Task<IActionResult> DownloadAllEventsExcel([FromQuery] EventType? type)
+        {
+            var result = await _mediator.Send(new GetAllEventsQuery(type));
+            var excelFile = _excelService.GenerateExcel(result, "Events");
+            return File(excelFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Events_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+        }
+
+        [HttpGet("{eventId}/attendees/download-excel")]
+        public async Task<IActionResult> DownloadAttendeesExcel(Guid eventId)
+        {
+            var result = await _mediator.Send(new GetTicketsByEventIdQuery(eventId));
+            var excelFile = _excelService.GenerateExcel(result.Data, "Attendees");
+            return File(excelFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Attendees_{eventId}_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+        }
+
+        [HttpGet("GetAllEventOwners/download-excel")]
+        public async Task<IActionResult> DownloadAllEventOwnersExcel()
+        {
+            var result = await _mediator.Send(new GetAllEventOwnersQuery());
+            var excelFile = _excelService.GenerateExcel(result, "EventOwners");
+            return File(excelFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"EventOwners_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+        }
+
+        [HttpGet("GetEventsByOwner/download-excel/{userId}")]
+        public async Task<IActionResult> DownloadEventsByOwnerExcel(string userId)
+        {
+            var result = await _mediator.Send(new GetEventsByOwnerQuery(userId));
+            var excelFile = _excelService.GenerateExcel(result, "OwnedEvents");
+            return File(excelFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"EventsByOwner_{userId}_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
         }
 
         [HttpPost("CreateNewEvent")]

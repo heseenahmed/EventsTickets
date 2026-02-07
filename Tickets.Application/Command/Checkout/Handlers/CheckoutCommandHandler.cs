@@ -8,6 +8,7 @@ using Tickets.Domain.Entity;
 using Tickets.Domain.IRepository;
 using Tickets.Application.Command.Checkout;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Tickets.Application.Command.Checkout.Handlers
@@ -48,12 +49,29 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 return APIResponse<string>.Fail(404, null, _localizer[LocalizationMessages.NotFound]);
             }
 
-            int requiredVisitors = request.Dto.VisitorCount + 1; // Himself + visitors
+            // Rule: Each ticket has 2 default free visitors ADDED to the declared count.
+            // Scans = 1 (Attendee) + VisitorCount + 2 (Free Buffer).
+            int totalPeople = request.Dto.VisitorCount + 3;
 
-            if (eventEntity.AvailableNumberOfVisitors < requiredVisitors)
+            if (eventEntity.NumberOfVisitorsAllowed > 0 && eventEntity.AvailableNumberOfVisitors < totalPeople)
             {
                 return APIResponse<string>.Fail(400, null, _localizer[LocalizationMessages.NotEnoughTickets]);
             }
+
+            // Prevent duplicate registration for the same event by email or phone
+            bool alreadyRegistered = await _ticketRepository.GetAllQueryable()
+                .AnyAsync(t => t.EventId == request.Dto.EventId && (t.AttendeeEmail == request.Dto.Email || t.AttendeePhone == request.Dto.Phone), cancellationToken);
+
+            if (alreadyRegistered)
+            {
+                return APIResponse<string>.Fail(400, null, _localizer[LocalizationMessages.AlreadyRegistered]);
+            }
+
+            // Calculate Total Price
+            // Calculate Total Price
+            // Base Price includes Attendee + 2 Free Visitors.
+            // All input visitors are considered "Extra" and charged the fee.
+            decimal totalPrice = eventEntity.Price + (request.Dto.VisitorCount * eventEntity.VisitorFee);
 
             string? attendeeImageUrl = null;
             if (request.Dto.Photo != null)
@@ -71,15 +89,19 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 AttendeeEmail = request.Dto.Email,
                 AttendeePhone = request.Dto.Phone,
                 AttendeeImageUrl = attendeeImageUrl,
-                VisitorCount = request.Dto.VisitorCount,
-                MaxScans = requiredVisitors,
+                VisitorCount = request.Dto.VisitorCount, // Keep original declared count
+                TotalPrice = totalPrice,
+                MaxScans = totalPeople, // 1 + VisitorCount + 2
                 ScannedCount = 0,
                 QrToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N"), // Longer token
                 CreatedBy = request.Dto.FullName
             };
 
-            // Decrease available number of visitors
-            eventEntity.AvailableNumberOfVisitors -= requiredVisitors;
+            if (eventEntity.NumberOfVisitorsAllowed > 0)
+            {
+                // Decrease available number of visitors by the reserved capacity (totalPeople)
+                eventEntity.AvailableNumberOfVisitors -= totalPeople;
+            }
 
             await _ticketRepository.AddAsync(ticket);
             await _eventRepository.UpdateAsync(eventEntity);

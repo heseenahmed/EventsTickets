@@ -27,7 +27,8 @@ namespace Tickets.Application.Query.Checkout.Handlers
                 Email = t.AttendeeEmail,
                 Companions = $"{t.VisitorCount} Companions",
                 TotalPrice = $"{(t.Event.Price * (t.VisitorCount + 1)):N0} EGP",
-                Status = t.ScannedCount < t.MaxScans ? "Active" : "Inactive"
+                Status = t.ScannedCount < t.MaxScans ? "Active" : "Inactive",
+                Attendance = t.ScannedCount > 0 ? "Active" : "Inactive"
             });
 
             return APIResponse<IEnumerable<AttendeeDto>>.Success(dtos);

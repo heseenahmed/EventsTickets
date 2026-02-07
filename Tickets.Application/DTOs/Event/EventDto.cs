@@ -15,12 +15,22 @@ namespace Tickets.Application.DTOs.Event
         public string Location { get; set; } = null!;
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
+        public decimal VisitorFee { get; set; }
         public int NumberOfVisitorsAllowed { get; set; }
         public int AvailableNumberOfVisitors { get; set; }
         public string? ImageUrl { get; set; }
         public string? EventDetails { get; set; }
         public string? TermsOfEntries { get; set; }
         public EventType Type { get; set; }
+
+        // Owner Info
+        public string? EventOwnerName { get; set; }
+        public string? EventOwnerEmail { get; set; }
+        public string? EventOwnerPhone { get; set; }
+
+        // Status and Booking Info
+        public string Status { get; set; } = null!;
+        public int TotalVisitorsCount { get; set; }
     }
 
     public class CreateEventDto
@@ -32,6 +42,7 @@ namespace Tickets.Application.DTOs.Event
         public string Location { get; set; } = null!;
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
+        public decimal VisitorFee { get; set; }
         public int NumberOfVisitorsAllowed { get; set; }
         public string? EventDetails { get; set; }
         public string? TermsOfEntries { get; set; }
@@ -50,6 +61,7 @@ namespace Tickets.Application.DTOs.Event
         public string Location { get; set; } = null!;
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
+        public decimal VisitorFee { get; set; }
         public int NumberOfVisitorsAllowed { get; set; }
         public int AvailableNumberOfVisitors { get; set; }
         public string? EventDetails { get; set; }

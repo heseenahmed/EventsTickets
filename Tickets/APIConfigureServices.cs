@@ -66,6 +66,12 @@ namespace Tickets.API
                           .AllowAnyHeader()
                           .AllowCredentials(); 
                 });
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
             });
 
             services.AddEndpointsApiExplorer();

@@ -52,6 +52,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 VisitorCount = ticket.VisitorCount,
                 MaxScans = ticket.MaxScans,
                 ScannedCount = ticket.ScannedCount,
+                TotalPrice = ticket.TotalPrice,
                 EventName = ticket.Event?.Name ?? "N/A"
             };
 

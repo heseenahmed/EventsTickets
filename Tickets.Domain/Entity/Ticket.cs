@@ -34,6 +34,7 @@ namespace Tickets.Domain.Entity
         public int MaxScans { get; set; } // VisitorCount + 1
 
         public int ScannedCount { get; set; }
+        public decimal TotalPrice { get; set; }
 
         [Required]
         [MaxLength(500)]

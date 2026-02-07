@@ -34,6 +34,7 @@ namespace Tickets.Application.DTOs.Checkout
         public int MaxScans { get; set; }
         public int ScannedCount { get; set; }
         public int RemainingScans => MaxScans - ScannedCount;
+        public decimal TotalPrice { get; set; }
         public string EventName { get; set; } = null!;
     }
 }

@@ -18,7 +18,11 @@ namespace Tickets.Application.Queries.Event.Handlers
 
         public async Task<EventDto?> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
         {
-            var eventEntity = await _eventRepository.GetByGuidAsync(request.Id);
+            var eventEntity = await _eventRepository.GetAllQueryable()
+                .Include(e => e.Owner)
+                .Include(e => e.Tickets)
+                .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+
             if (eventEntity == null) return null;
 
             return new EventDto
@@ -29,18 +33,26 @@ namespace Tickets.Application.Queries.Event.Handlers
                 Location = eventEntity.Location,
                 Date = eventEntity.Date,
                 Price = eventEntity.Price,
+                VisitorFee = eventEntity.VisitorFee,
                 NumberOfVisitorsAllowed = eventEntity.NumberOfVisitorsAllowed,
                 AvailableNumberOfVisitors = eventEntity.AvailableNumberOfVisitors,
                 ImageUrl = eventEntity.ImageUrl,
                 EventDetails = eventEntity.EventDetails,
                 TermsOfEntries = eventEntity.TermsOfEntries,
-                Type = eventEntity.Type
+                Type = eventEntity.Type,
+                EventOwnerName = eventEntity.Owner?.FullName,
+                EventOwnerEmail = eventEntity.Owner?.Email,
+                EventOwnerPhone = eventEntity.Owner?.PhoneNumber,
+                Status = eventEntity.Date > DateTime.UtcNow ? "Active" : "Inactive",
+                TotalVisitorsCount = eventEntity.Tickets.Sum(t => t.VisitorCount)
             };
         }
 
         public async Task<List<EventDto>> Handle(GetAllEventsQuery request, CancellationToken cancellationToken)
         {
-            var query = _eventRepository.GetAllQueryable();
+            IQueryable<Tickets.Domain.Entity.Event> query = _eventRepository.GetAllQueryable()
+                .Include(e => e.Owner)
+                .Include(e => e.Tickets);
             
             if (request.Type.HasValue)
             {
@@ -55,12 +67,18 @@ namespace Tickets.Application.Queries.Event.Handlers
                 Location = eventEntity.Location,
                 Date = eventEntity.Date,
                 Price = eventEntity.Price,
+                VisitorFee = eventEntity.VisitorFee,
                 NumberOfVisitorsAllowed = eventEntity.NumberOfVisitorsAllowed,
                 AvailableNumberOfVisitors = eventEntity.AvailableNumberOfVisitors,
                 ImageUrl = eventEntity.ImageUrl,
                 EventDetails = eventEntity.EventDetails,
                 TermsOfEntries = eventEntity.TermsOfEntries,
-                Type = eventEntity.Type
+                Type = eventEntity.Type,
+                EventOwnerName = eventEntity.Owner != null ? eventEntity.Owner.FullName : null,
+                EventOwnerEmail = eventEntity.Owner != null ? eventEntity.Owner.Email : null,
+                EventOwnerPhone = eventEntity.Owner != null ? eventEntity.Owner.PhoneNumber : null,
+                Status = eventEntity.Date > DateTime.UtcNow ? "Active" : "Inactive",
+                TotalVisitorsCount = eventEntity.Tickets.Sum(t => t.VisitorCount)
             }).ToListAsync(cancellationToken);
         }
     }

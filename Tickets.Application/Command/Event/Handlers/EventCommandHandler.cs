@@ -41,6 +41,7 @@ namespace Tickets.Application.Command.Event.Handlers
                 Location = request.EventDto.Location,
                 Date = request.EventDto.Date,
                 Price = request.EventDto.Price,
+                VisitorFee = request.EventDto.VisitorFee,
                 NumberOfVisitorsAllowed = request.EventDto.NumberOfVisitorsAllowed,
                 AvailableNumberOfVisitors = request.EventDto.NumberOfVisitorsAllowed,
                 ImageUrl = imageUrl,
@@ -77,6 +78,7 @@ namespace Tickets.Application.Command.Event.Handlers
             eventEntity.Location = request.EventDto.Location;
             eventEntity.Date = request.EventDto.Date;
             eventEntity.Price = request.EventDto.Price;
+            eventEntity.VisitorFee = request.EventDto.VisitorFee;
             eventEntity.NumberOfVisitorsAllowed = request.EventDto.NumberOfVisitorsAllowed;
             eventEntity.AvailableNumberOfVisitors = request.EventDto.AvailableNumberOfVisitors;
             eventEntity.EventDetails = request.EventDto.EventDetails;

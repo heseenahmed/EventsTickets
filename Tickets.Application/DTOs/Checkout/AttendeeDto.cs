@@ -10,5 +10,6 @@ namespace Tickets.Application.DTOs.Checkout
         public string? Companions { get; set; }
         public string? TotalPrice { get; set; }
         public string? Status { get; set; }
+        public string? Attendance { get; set; }
     }
 }
