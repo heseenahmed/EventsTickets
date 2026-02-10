@@ -114,6 +114,7 @@ namespace Tickets.Application.Common.Localization
         public const string EventRetrievedSuccessfully = "EventRetrievedSuccessfully";
         public const string EventsRetrievedSuccessfully = "EventsRetrievedSuccessfully";
         public const string EventNotFound = "EventNotFound";
+        public const string FunDayEvent = "FunDayEvent";
 
         // Event Owner
         public const string UserIsNotEventOwner = "UserIsNotEventOwner";

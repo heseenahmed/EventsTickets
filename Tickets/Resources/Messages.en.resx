@@ -396,4 +396,7 @@
   <data name="EmailBodyWelcomeTemplate" xml:space="preserve">
     <value>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Welcome to {0}!&lt;/h1&gt;&lt;p&gt;Hi {1},&lt;/p&gt;&lt;p&gt;Thank you for choosing our event. We are excited to have you with us!&lt;/p&gt;&lt;p&gt;You can access your QR code for entry by clicking the link below:&lt;/p&gt;&lt;p&gt;&lt;a href='{2}'&gt;{2}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;See you there!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</value>
   </data>
+  <data name="FunDayEvent" xml:space="preserve">
+    <value>Fun Day Event</value>
+  </data>
 </root>

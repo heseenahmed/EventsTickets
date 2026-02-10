@@ -396,4 +396,7 @@
   <data name="EmailBodyWelcomeTemplate" xml:space="preserve">
     <value>&lt;html&gt;&lt;body&gt;&lt;h1&gt;مرحباً بك في {0}!&lt;/h1&gt;&lt;p&gt;مرحباً {1}،&lt;/p&gt;&lt;p&gt;شكراً لاختيارك فعاليتنا. نحن متحمسون لوجودك معنا!&lt;/p&gt;&lt;p&gt;يمكنك الوصول إلى رمز QR الخاص بك للدخول من خلال النقر على الرابط أدناه:&lt;/p&gt;&lt;p&gt;&lt;a href='{2}'&gt;{2}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;نراك هناك!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</value>
   </data>
+  <data name="FunDayEvent" xml:space="preserve">
+    <value>يوم ترفيهي</value>
+  </data>
 </root>
