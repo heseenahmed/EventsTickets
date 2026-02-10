@@ -14,12 +14,21 @@ namespace Tickets.Application.Command.Event.Handlers
         IRequestHandler<DeleteEventCommand, bool>
     {
         private readonly IEventRepository _eventRepository;
+        private readonly IBookingRepository _bookingRepository;
+        private readonly ITicketRepository _ticketRepository;
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _env;
 
-        public EventCommandHandler(IEventRepository eventRepository, IUnitOfWork uow, IWebHostEnvironment env)
+        public EventCommandHandler(
+            IEventRepository eventRepository, 
+            IBookingRepository bookingRepository,
+            ITicketRepository ticketRepository,
+            IUnitOfWork uow, 
+            IWebHostEnvironment env)
         {
             _eventRepository = eventRepository;
+            _bookingRepository = bookingRepository;
+            _ticketRepository = ticketRepository;
             _uow = uow;
             _env = env;
         }
@@ -96,7 +105,22 @@ namespace Tickets.Application.Command.Event.Handlers
             var eventEntity = await _eventRepository.GetByGuidAsync(request.Id);
             if (eventEntity == null) return false;
 
+            // Cascading deletion: Delete associated bookings and tickets
+            var bookings = await _bookingRepository.GetListAsync(b => b.EventId == request.Id);
+            foreach (var booking in bookings)
+            {
+                await _bookingRepository.RemoveAsync(booking);
+            }
+
+            var tickets = await _ticketRepository.GetByEventIdAsync(request.Id, cancellationToken);
+            foreach (var ticket in tickets)
+            {
+                await _ticketRepository.RemoveAsync(ticket);
+            }
+
             await _eventRepository.RemoveAsync(eventEntity);
+            await _uow.CommitAsync();
+
             return true;
         }
     }

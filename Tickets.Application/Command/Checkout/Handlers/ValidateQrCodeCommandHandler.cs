@@ -53,7 +53,8 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 MaxScans = ticket.MaxScans,
                 ScannedCount = ticket.ScannedCount,
                 TotalPrice = ticket.TotalPrice,
-                EventName = ticket.Event?.Name ?? "N/A"
+                EventName = ticket.Event?.Name ?? "N/A",
+                EventType = ticket.Event?.Type ?? 0
             };
 
             return APIResponse<TicketDto>.Success(dto, _localizer[LocalizationMessages.QrCodeValidatedSuccessfully]);

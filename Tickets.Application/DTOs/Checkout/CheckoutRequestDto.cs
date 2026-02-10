@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using Tickets.Domain.Enums;
 
 namespace Tickets.Application.DTOs.Checkout
 {
@@ -14,12 +15,11 @@ namespace Tickets.Application.DTOs.Checkout
         [Required]
         public string Phone { get; set; } = null!;
 
-        [Required]
         [EmailAddress]
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; }
 
         public int VisitorCount { get; set; }
-
+        public decimal Price { get; set; }
         public IFormFile? Photo { get; set; }
     }
 
@@ -36,5 +36,6 @@ namespace Tickets.Application.DTOs.Checkout
         public int RemainingScans => MaxScans - ScannedCount;
         public decimal TotalPrice { get; set; }
         public string EventName { get; set; } = null!;
+        public EventType EventType { get; set; }
     }
 }
