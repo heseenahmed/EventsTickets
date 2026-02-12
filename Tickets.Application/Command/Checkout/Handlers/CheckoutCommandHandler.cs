@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tickets.Application.Command.Checkout.Handlers
 {
-    public class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, APIResponse<string>>
+    public class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, APIResponse<List<string>>>
     {
         private readonly IEventRepository _eventRepository;
         private readonly ITicketRepository _ticketRepository;
@@ -42,40 +42,34 @@ namespace Tickets.Application.Command.Checkout.Handlers
             _mailSettings = mailSettings.Value;
         }
 
-        public async Task<APIResponse<string>> Handle(CheckoutCommand request, CancellationToken cancellationToken)
+        public async Task<APIResponse<List<string>>> Handle(CheckoutCommand request, CancellationToken cancellationToken)
         {
             var eventEntity = await _eventRepository.GetByGuidAsync(request.Dto.EventId);
             if (eventEntity == null)
             {
-                return APIResponse<string>.Fail(404, null, _localizer[LocalizationMessages.NotFound]);
+                return APIResponse<List<string>>.Fail(404, null, _localizer[LocalizationMessages.NotFound]);
             }
 
-            // Rule: Each ticket has 2 default free visitors ADDED to the declared count (except for Fun Day events).
-            // Scans = 1 (Attendee) + VisitorCount + 2 (Free Buffer).
-            int totalPeople = eventEntity.Type == EventType.FunDayEvent 
-                ? request.Dto.VisitorCount + 1 
-                : request.Dto.VisitorCount + 3;
+            // Rule: Each person has their own unique QR code.
+            // Scans = 1 per person.
+            int totalPeople = request.Dto.VisitorCount + 1; 
 
             if (eventEntity.NumberOfVisitorsAllowed > 0 && eventEntity.AvailableNumberOfVisitors < totalPeople)
             {
-                return APIResponse<string>.Fail(400, null, _localizer[LocalizationMessages.NotEnoughTickets]);
+                return APIResponse<List<string>>.Fail(400, null, _localizer[LocalizationMessages.NotEnoughTickets]);
             }
 
             // Prevent duplicate registration for the same event by email or phone
             bool alreadyRegistered = await _ticketRepository.GetAllQueryable()
                 .AnyAsync(t => t.EventId == request.Dto.EventId && 
-                               (eventEntity.Type == EventType.FunDayEvent 
-                                ? t.AttendeePhone == request.Dto.Phone 
-                                : (t.AttendeeEmail == request.Dto.Email || t.AttendeePhone == request.Dto.Phone)), cancellationToken);
+                               (t.AttendeeEmail == request.Dto.Email || t.AttendeePhone == request.Dto.Phone), cancellationToken);
 
             if (alreadyRegistered)
             {
-                return APIResponse<string>.Fail(400, null, _localizer[LocalizationMessages.AlreadyRegistered]);
+                return APIResponse<List<string>>.Fail(400, null, _localizer[LocalizationMessages.AlreadyRegistered]);
             }
 
             // Calculate Total Price
-            // Base Price includes Attendee + 2 Free Visitors.
-            // All input visitors are considered "Extra" and charged the fee.
             decimal totalPrice = eventEntity.Type == EventType.FunDayEvent 
                 ? request.Dto.Price 
                 : eventEntity.Price + (request.Dto.VisitorCount * eventEntity.VisitorFee);
@@ -87,40 +81,45 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 attendeeImageUrl = await ImageHelper.SaveImageAsync(request.Dto.Photo, folderPath, request.BaseUrl);
             }
 
-            var ticket = new Ticket
+            var tickets = new List<Ticket>();
+            for (int i = 0; i < totalPeople; i++)
             {
-                Id = Guid.NewGuid(),
-                EventId = request.Dto.EventId,
-                StudentId = request.StudentId,
-                AttendeeName = request.Dto.FullName,
-                AttendeeEmail = eventEntity.Type == EventType.FunDayEvent ? (request.Dto.Email ?? "benzenydev@gmail.com") : request.Dto.Email!,
-                AttendeePhone = request.Dto.Phone,
-                AttendeeImageUrl = attendeeImageUrl,
-                VisitorCount = request.Dto.VisitorCount, // Keep original declared count
-                TotalPrice = totalPrice,
-                MaxScans = totalPeople, // 1 + VisitorCount + 2
-                ScannedCount = 0,
-                QrToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N"), // Longer token
-                CreatedBy = request.Dto.FullName
-            };
+                var ticket = new Ticket
+                {
+                    Id = Guid.NewGuid(),
+                    EventId = request.Dto.EventId,
+                    StudentId = request.StudentId,
+                    AttendeeName = i == 0 ? request.Dto.FullName : $"{request.Dto.FullName} - Visitor {i}",
+                    AttendeeEmail = request.Dto.Email,
+                    AttendeePhone = request.Dto.Phone,
+                    AttendeeImageUrl = attendeeImageUrl,
+                    VisitorCount = 0, // Individual ticket
+                    TotalPrice = i == 0 ? totalPrice : 0, // Assign price to first ticket only
+                    MaxScans = 1,
+                    ScannedCount = 0,
+                    QrToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N"),
+                    CreatedBy = request.Dto.FullName
+                };
+                tickets.Add(ticket);
+                await _ticketRepository.AddAsync(ticket);
+            }
 
             if (eventEntity.NumberOfVisitorsAllowed > 0)
             {
-                // Decrease available number of visitors by the reserved capacity (totalPeople)
                 eventEntity.AvailableNumberOfVisitors -= totalPeople;
             }
 
-            await _ticketRepository.AddAsync(ticket);
             await _eventRepository.UpdateAsync(eventEntity);
             await _uow.CommitAsync();
 
             try
             {
-                var qrLink = $"https://tikcktat.vercel.app/qrcode/{ticket.QrToken}";
+                var qrLinks = string.Join("<br/>", tickets.Select(t => $"<a href='https://tikcktat.vercel.app/qrcode/{t.QrToken}'>QR Code {tickets.IndexOf(t) + 1}</a>"));
+                
                 var subject = string.Format(_localizer[LocalizationMessages.EmailSubjectWelcome], eventEntity.Name);
-                var message = string.Format(_localizer[LocalizationMessages.EmailBodyWelcomeTemplate], eventEntity.Name, ticket.AttendeeName, qrLink);
+                var message = string.Format(_localizer[LocalizationMessages.EmailBodyWelcomeTemplate], eventEntity.Name, request.Dto.FullName, qrLinks, tickets.Count);
 
-                var recipientEmail = eventEntity.Type == EventType.FunDayEvent ? "benzenydev@gmail.com" : ticket.AttendeeEmail;
+                var recipientEmail = request.Dto.Email;
 
                 await _emailSender.SendEmailAsync(
                     _mailSettings.Host,
@@ -136,10 +135,10 @@ namespace Tickets.Application.Command.Checkout.Handlers
             }
             catch (Exception ex)
             {
-                // Log exception if needed, but don't fail the checkout if email fails
+                // Log exception if needed
             }
 
-            return APIResponse<string>.Success(ticket.QrToken, _localizer[LocalizationMessages.CheckoutSuccessfulWithEmail]);
+            return APIResponse<List<string>>.Success(tickets.Select(t => t.QrToken).ToList(), _localizer[LocalizationMessages.CheckoutSuccessfulWithEmail]);
         }
     }
 }

@@ -6,5 +6,6 @@ namespace Tickets.Application.Common.Interfaces
         Task BeginTransactionAsync();
         Task CommitAsync();
         Task RollbackAsync();
+        Task<T> ExecuteAsync<T>(Func<Task<T>> action);
     }
 }

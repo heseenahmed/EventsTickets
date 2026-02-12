@@ -25,13 +25,13 @@ namespace Tickets.Controllers
 
         [HttpPost("checkout")]
         [AllowAnonymous] // Assuming checkout can be done by non-logged in users as well, or as per requirement
-        public async Task<ActionResult<APIResponse<string>>> Checkout([FromForm] CheckoutRequestDto dto)
+        public async Task<ActionResult<APIResponse<List<string>>>> Checkout([FromForm] CheckoutRequestDto dto)
         {
             var studentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             
             var result = await _mediator.Send(new CheckoutCommand(dto, studentId, baseUrl));
-            return Ok(result);
+            return StatusCode(result.ApiStatusCode, result);
         }
 
         [HttpPost("validateQr/{token}")]
@@ -40,7 +40,7 @@ namespace Tickets.Controllers
         public async Task<ActionResult<APIResponse<TicketDto>>> ValidateQr(string token)
         {
             var result = await _mediator.Send(new ValidateQrCodeCommand(token));
-            return Ok(result);
+            return StatusCode(result.ApiStatusCode, result);
         }
     }
 }

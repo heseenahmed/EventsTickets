@@ -15,8 +15,9 @@ namespace Tickets.Application.DTOs.Checkout
         [Required]
         public string Phone { get; set; } = null!;
 
+        [Required]
         [EmailAddress]
-        public string? Email { get; set; }
+        public string Email { get; set; } = null!;
 
         public int VisitorCount { get; set; }
         public decimal Price { get; set; }

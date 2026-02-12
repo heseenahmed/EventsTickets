@@ -394,9 +394,42 @@
     <value>Welcome to {0}!</value>
   </data>
   <data name="EmailBodyWelcomeTemplate" xml:space="preserve">
-    <value>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Welcome to {0}!&lt;/h1&gt;&lt;p&gt;Hi {1},&lt;/p&gt;&lt;p&gt;Thank you for choosing our event. We are excited to have you with us!&lt;/p&gt;&lt;p&gt;You can access your QR code for entry by clicking the link below:&lt;/p&gt;&lt;p&gt;&lt;a href='{2}'&gt;{2}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;See you there!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</value>
+    <value>&lt;html&gt;
+&lt;body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'&gt;
+    &lt;div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;'&gt;
+        &lt;h1 style='color: #2c3e50;'&gt;Welcome to {0}!&lt;/h1&gt;
+        &lt;p&gt;Dear &lt;strong&gt;{1}&lt;/strong&gt;،&lt;/p&gt;
+        &lt;p&gt;Thank you for choosing our event. &lt;strong&gt;{3}&lt;/strong&gt; tickets have been successfully booked.&lt;/p&gt;
+        
+        &lt;div style='background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffecb5; margin: 20px 0; border-radius: 5px;'&gt;
+            &lt;h3 style='margin-top: 0; color: #856404;'&gt;⚠️ Important Notice&lt;/h3&gt;
+            &lt;p style='margin-bottom: 0;'&gt;Each QR code is valid for &lt;strong&gt;one-time use only&lt;/strong&gt;. Please present it at the gate for entry.&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;h3&gt;🔗 Your QR Codes:&lt;/h3&gt;
+        &lt;p&gt;{2}&lt;/p&gt;
+
+        &lt;hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'&gt;
+
+        &lt;h3 style='color: #2c3e50;'&gt;📜 Important Instructions &amp; Rules:&lt;/h3&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;strong&gt;Timing:&lt;/strong&gt; Entry starts at 2:00 PM. The event ends at 8:30 PM.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Location:&lt;/strong&gt; Wadi Degla Protectorate, Maadi (&lt;a href='https://maps.app.goo.gl/HYbdQCFrCGrT6wq58'&gt;Map Link&lt;/a&gt;).&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;What to Bring:&lt;/strong&gt; Heavy clothes, comfortable shoes, extra pants, power bank, snacks, and water.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Hoodie Pickup:&lt;/strong&gt; Wednesday 5-8 PM at "Ebda3" in Dokki (&lt;a href='https://maps.app.goo.gl/jjJcTXm2KiYFDPDEA'&gt;Address Link&lt;/a&gt;).&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Meals:&lt;/strong&gt; Optional meal ticket available (2 Kofta Sandwiches + Tahini) for 100 EGP.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Note:&lt;/strong&gt; Organizers are not responsible for any personal belongings.&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;We hope you have a great time!&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
   </data>
   <data name="FunDayEvent" xml:space="preserve">
     <value>Fun Day Event</value>
+  </data>
+  <data name="AlreadyRegistered" xml:space="preserve">
+    <value>This attendee is already registered for this event.</value>
   </data>
 </root>

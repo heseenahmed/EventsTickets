@@ -1,5 +1,3 @@
-using DocumentFormat.OpenXml.Math;
-using Tickets.Domain.Entity;
 using Tickets.Domain.Entity;
 using Tickets.Infra.Configuration;
 using Microsoft.AspNetCore.Identity;
@@ -90,7 +88,6 @@ namespace Tickets.Infra.Data
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
         public virtual DbSet<Note> Note { get; set; }
         public virtual DbSet<Booking> Bookings { get; set; }

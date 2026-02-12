@@ -69,35 +69,38 @@ namespace Tickets.Application.Command.User.Handlers
                 RefreshTokenExpiryUTC = DateTime.UtcNow.AddDays(7),
             };
 
-            await _uow.BeginTransactionAsync();
-            try
+            return await _uow.ExecuteAsync(async () =>
             {
-                var createResult = await _userManager.CreateAsync(user, dto.Password);
-                if (!createResult.Succeeded)
+                await _uow.BeginTransactionAsync();
+                try
+                {
+                    var createResult = await _userManager.CreateAsync(user, dto.Password);
+                    if (!createResult.Succeeded)
+                    {
+                        await _uow.RollbackAsync();
+                        var errors = createResult.Errors.Select(e => e.Description).ToList();
+                        return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, errors, _localizer[LocalizationMessages.FailedToCreateUser]);
+                    }
+
+                    // Assign role to user
+                    var roleResult = await _userManager.AddToRoleAsync(user, role.Name!);
+                    if (!roleResult.Succeeded)
+                    {
+                        await _uow.RollbackAsync();
+                        var errors = roleResult.Errors.Select(e => e.Description).ToList();
+                        return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, errors, _localizer[LocalizationMessages.ErrorAddingRole]);
+                    }
+
+                    await _uow.CommitAsync();
+                    await _cache.RemoveAsync(CacheKeys.UsersAll, cancellationToken);
+                    return APIResponse<bool>.Success(true, _localizer[LocalizationMessages.UserRegisteredSuccessfully]);
+                }
+                catch (Exception ex)
                 {
                     await _uow.RollbackAsync();
-                    var errors = createResult.Errors.Select(e => e.Description).ToList();
-                    return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, errors, _localizer[LocalizationMessages.FailedToCreateUser]);
+                    return APIResponse<bool>.Exception(ex, _localizer[LocalizationMessages.RegistrationFailedInternally]);
                 }
-
-                // Assign role to user
-                var roleResult = await _userManager.AddToRoleAsync(user, role.Name!);
-                if (!roleResult.Succeeded)
-                {
-                    await _uow.RollbackAsync();
-                    var errors = roleResult.Errors.Select(e => e.Description).ToList();
-                    return APIResponse<bool>.Fail(StatusCodes.Status400BadRequest, errors, _localizer[LocalizationMessages.ErrorAddingRole]);
-                }
-
-                await _uow.CommitAsync();
-                await _cache.RemoveAsync(CacheKeys.UsersAll, cancellationToken);
-                return APIResponse<bool>.Success(true, _localizer[LocalizationMessages.UserRegisteredSuccessfully]);
-            }
-            catch (Exception ex)
-            {
-                await _uow.RollbackAsync();
-                return APIResponse<bool>.Exception(ex, _localizer[LocalizationMessages.RegistrationFailedInternally]);
-            }
+            });
         }
     }
 }

@@ -16,7 +16,15 @@ builder.Services.AddAPIServices(builder.Configuration);
 var app = builder.Build();
 
 // Seed roles
-await DbSeeder.SeedRolesAsync(app.Services);
+try
+{
+    await DbSeeder.SeedRolesAsync(app.Services);
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during role seeding. The app will continue to start.");
+}
 
 // Enable Swagger in all environments (including Production)
 app.UseSwagger();

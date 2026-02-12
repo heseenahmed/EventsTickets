@@ -61,7 +61,7 @@ namespace Tickets.API
             {
                 options.AddPolicy("MyPolicy", policy => 
                 { 
-                    policy.WithOrigins("http://localhost:4200" , "https://tikcktat.vercel.app") // TODO: Add production domains
+                    policy.WithOrigins("http://localhost:4200" , "https://tikcktat.vercel.app" , "http://www.ticketateg.com" , "https://www.ticketateg.com" , "http://ticketateg.com", "https://ticketateg.com") // TODO: Add production domains
                           .AllowAnyMethod()
                           .AllowAnyHeader()
                           .AllowCredentials(); 
@@ -74,6 +74,7 @@ namespace Tickets.API
                 });
             });
 
+            services.AddHttpContextAccessor();
             services.AddEndpointsApiExplorer();
             services.AddScoped<IAppLocalizer, AppLocalizer>();
 
@@ -99,8 +100,13 @@ namespace Tickets.API
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-            var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-            services.AddSingleton(jwtSettings!);
+            var jwtSettingsSection = configuration.GetSection("JwtSettings");
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            if (jwtSettings == null)
+            {
+                throw new InvalidOperationException("JwtSettings section is missing in configuration.");
+            }
+            services.AddSingleton(jwtSettings);
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

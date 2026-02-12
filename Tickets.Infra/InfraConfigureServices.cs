@@ -25,8 +25,14 @@ namespace Tickets.Infra
             services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("AppDBContext"));
-                Console.WriteLine($"Connection String: {options.UseSqlServer(configuration.GetConnectionString("AppDBContext"))}");
+                options.UseSqlServer(configuration.GetConnectionString("AppDBContext"),
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorNumbersToAdd: null);
+                    });
             });
             var redisConnectionString = configuration["Redis:ConnectionString"];
 
