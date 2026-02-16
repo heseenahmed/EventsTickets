@@ -8,6 +8,7 @@ namespace Tickets.Application.DTOs
         public string Result { get; set; }
         public string Msg { get; set; }
         public List<string>? Errors { get; set; }
+        public string? PaymentUrl { get; set; }
         public T? Data { get; set; }
         public static APIResponse<T> Success(T data, string message = "Success", int statusCode = StatusCodes.Status200OK)
         {

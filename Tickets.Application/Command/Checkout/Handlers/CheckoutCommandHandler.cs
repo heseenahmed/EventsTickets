@@ -10,6 +10,7 @@ using Tickets.Application.Command.Checkout;
 using Tickets.Domain.Enums;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using Tickets.Application.Common.Options;
 
 
 namespace Tickets.Application.Command.Checkout.Handlers
@@ -23,6 +24,8 @@ namespace Tickets.Application.Command.Checkout.Handlers
         private readonly IAppLocalizer _localizer;
         private readonly IEmailSender _emailSender;
         private readonly MailSettings _mailSettings;
+        private readonly IPaymobService _paymobService;
+        private readonly PaymobOptions _paymobOptions;
 
         public CheckoutCommandHandler(
             IEventRepository eventRepository,
@@ -31,7 +34,9 @@ namespace Tickets.Application.Command.Checkout.Handlers
             IWebHostEnvironment env,
             IAppLocalizer localizer,
             IEmailSender emailSender,
-            IOptions<MailSettings> mailSettings)
+            IOptions<MailSettings> mailSettings,
+            IPaymobService paymobService,
+            IOptions<PaymobOptions> paymobOptions)
         {
             _eventRepository = eventRepository;
             _ticketRepository = ticketRepository;
@@ -40,6 +45,8 @@ namespace Tickets.Application.Command.Checkout.Handlers
             _localizer = localizer;
             _emailSender = emailSender;
             _mailSettings = mailSettings.Value;
+            _paymobService = paymobService;
+            _paymobOptions = paymobOptions.Value;
         }
 
         public async Task<APIResponse<List<string>>> Handle(CheckoutCommand request, CancellationToken cancellationToken)
@@ -70,7 +77,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
             }
 
             // Calculate Total Price
-            decimal totalPrice = eventEntity.Type == EventType.FunDayEvent 
+            decimal totalPrice = (eventEntity.Type == EventType.FunDayEvent || request.Dto.Price > 0)
                 ? request.Dto.Price 
                 : eventEntity.Price + (request.Dto.VisitorCount * eventEntity.VisitorFee);
 
@@ -98,6 +105,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
                     MaxScans = 1,
                     ScannedCount = 0,
                     QrToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N"),
+                    IsPaid = true,
                     CreatedBy = request.Dto.FullName
                 };
                 tickets.Add(ticket);
@@ -110,6 +118,25 @@ namespace Tickets.Application.Command.Checkout.Handlers
             }
 
             await _eventRepository.UpdateAsync(eventEntity);
+
+            string? paymentUrl = null;
+            if (totalPrice > 0)
+            {
+                try
+                {
+                    var authToken = await _paymobService.GetAuthenticationTokenAsync();
+                    var paymobOrderId = await _paymobService.CreateOrderAsync(authToken, totalPrice * 100); 
+                    var paymentKey = await _paymobService.GeneratePaymentKeyAsync(authToken, paymobOrderId, totalPrice * 100);
+
+                    paymentUrl = $"https://accept.paymob.com/api/acceptance/iframes/{_paymobOptions.IframeId}?payment_token={paymentKey}";
+                    foreach(var t in tickets) t.IsPaid = false; 
+                }
+                catch (Exception ex)
+                {
+                    return APIResponse<List<string>>.Fail(500, new List<string> { ex.Message }, "Failed to initiate payment process.");
+                }
+            }
+
             await _uow.CommitAsync();
 
             try
@@ -138,7 +165,9 @@ namespace Tickets.Application.Command.Checkout.Handlers
                 // Log exception if needed
             }
 
-            return APIResponse<List<string>>.Success(tickets.Select(t => t.QrToken).ToList(), _localizer[LocalizationMessages.CheckoutSuccessfulWithEmail]);
+            var response = APIResponse<List<string>>.Success(tickets.Select(t => t.QrToken).ToList(), _localizer[LocalizationMessages.CheckoutSuccessfulWithEmail]);
+            response.PaymentUrl = paymentUrl;
+            return response;
         }
     }
 }

@@ -8,6 +8,8 @@ using Tickets.Domain.Entity;
 using Tickets.Domain.IRepository;
 using Tickets.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Tickets.Application.Common.Options;
 
 namespace Tickets.Application.Command.Event.Handlers
 {
@@ -19,6 +21,8 @@ namespace Tickets.Application.Command.Event.Handlers
         private readonly IWebHostEnvironment _env;
         private readonly IAppLocalizer _localizer;
         private readonly IMailRepository _mailRepository;
+        private readonly IPaymobService _paymobService;
+        private readonly PaymobOptions _paymobOptions;
 
         public EventCheckoutCommandHandler(
             IEventRepository eventRepository,
@@ -26,7 +30,9 @@ namespace Tickets.Application.Command.Event.Handlers
             IUnitOfWork uow,
             IWebHostEnvironment env,
             IAppLocalizer localizer,
-            IMailRepository mailRepository)
+            IMailRepository mailRepository,
+            IPaymobService paymobService,
+            IOptions<PaymobOptions> paymobOptions)
         {
             _eventRepository = eventRepository;
             _bookingRepository = bookingRepository;
@@ -34,6 +40,8 @@ namespace Tickets.Application.Command.Event.Handlers
             _env = env;
             _localizer = localizer;
             _mailRepository = mailRepository;
+            _paymobService = paymobService;
+            _paymobOptions = paymobOptions.Value;
         }
 
         public async Task<APIResponse<bool>> Handle(EventCheckoutCommand request, CancellationToken cancellationToken)
@@ -80,7 +88,7 @@ namespace Tickets.Application.Command.Event.Handlers
                 AttendeePhone = request.Dto.Phone,
                 AttendeeImageUrl = attendeeImageUrl,
                 NumberOfVisitors = request.Dto.VisitorCount,
-                TotalPrice = eventEntity.Type == EventType.FunDayEvent ? request.Dto.Price : eventEntity.Price * requiredVisitors,
+                TotalPrice = (eventEntity.Type == EventType.FunDayEvent || request.Dto.Price > 0) ? request.Dto.Price : eventEntity.Price * requiredVisitors,
                 IsPaid = true,
                 QrCodeData = Guid.NewGuid().ToString("N"),
                 MaxEntries = requiredVisitors,
@@ -91,6 +99,26 @@ namespace Tickets.Application.Command.Event.Handlers
 
             // Decrease available number of visitors
             eventEntity.AvailableNumberOfVisitors -= requiredVisitors;
+
+            string? paymentUrl = null;
+            if (booking.TotalPrice > 0)
+            {
+                try
+                {
+                    var authToken = await _paymobService.GetAuthenticationTokenAsync();
+                    var paymobOrderId = await _paymobService.CreateOrderAsync(authToken, booking.TotalPrice * 100); // Convert to cents
+                    var paymentKey = await _paymobService.GeneratePaymentKeyAsync(authToken, paymobOrderId, booking.TotalPrice * 100);
+
+                    paymentUrl = $"https://accept.paymob.com/api/acceptance/iframes/{_paymobOptions.IframeId}?payment_token={paymentKey}";
+                    booking.IsPaid = false; // Mark as unpaid until payment is confirmed
+                }
+                catch (Exception ex)
+                {
+                    // If payment integration fails, we might want to log it and handle accordingly
+                    // For now, let's just return an error if it's a paid event
+                    return APIResponse<bool>.Fail(500, new List<string> { ex.Message }, "Failed to initiate payment process.");
+                }
+            }
 
             await _bookingRepository.AddAsync(booking);
             await _eventRepository.UpdateAsync(eventEntity);
@@ -107,7 +135,9 @@ namespace Tickets.Application.Command.Event.Handlers
                 await _mailRepository.SendEmailAsync("benzenydev@gmail.com", "Fun Day Event Checkout", body);
             }
 
-            return APIResponse<bool>.Success(true, "Checkout successful.");
+            var response = APIResponse<bool>.Success(true, "Checkout initiated.");
+            response.PaymentUrl = paymentUrl;
+            return response;
         }
     }
 }

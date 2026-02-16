@@ -7,6 +7,8 @@ using Tickets.Infra.Data;
 using Tickets.Infra.Persistence;
 using Tickets.Infra.Repository;
 using Tickets.Application.Common.Interfaces;
+using Tickets.Application.Common.Options;
+using Tickets.Infra.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,7 @@ namespace Tickets.Infra
 
             services.Configure<AuthMessageSenderOptions>(configuration.GetSection("EmailSettings"));
             services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+            services.Configure<PaymobOptions>(configuration.GetSection("PaymobSettings"));
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("AppDBContext"),
@@ -60,6 +63,7 @@ namespace Tickets.Infra
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddHttpClient<IPaymobService, PaymobService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
