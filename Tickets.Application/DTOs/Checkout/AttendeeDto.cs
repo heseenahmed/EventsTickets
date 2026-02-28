@@ -9,6 +9,9 @@ namespace Tickets.Application.DTOs.Checkout
         public string? Email { get; set; }
         public string? Companions { get; set; }
         public string? TotalPrice { get; set; }
+        public string? Faculty { get; set; }
+        public string? Department { get; set; }
+        public string? Year { get; set; }
         public string? Status { get; set; }
         public string? Attendance { get; set; }
     }

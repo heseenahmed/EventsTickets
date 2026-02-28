@@ -27,6 +27,9 @@ namespace Tickets.Application.Query.Checkout.Handlers
                 Email = t.AttendeeEmail,
                 Companions = $"{t.VisitorCount} Companions",
                 TotalPrice = $"{(t.Event.Price * (t.VisitorCount + 1)):N0} EGP",
+                Faculty = t.Faculty,
+                Department = t.Department,
+                Year = t.Year,
                 Status = t.ScannedCount < t.MaxScans ? "Active" : "Inactive",
                 Attendance = t.ScannedCount > 0 ? "Active" : "Inactive"
             });

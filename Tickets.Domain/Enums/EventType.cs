@@ -4,6 +4,7 @@ namespace Tickets.Domain.Enums
     {
         GraduationParty = 1,
         Conferences = 2,
-        FunDayEvent = 3
+        FunDayEvent = 3,
+        RamadanIftar = 4 // افطار رمضان
     }
 }

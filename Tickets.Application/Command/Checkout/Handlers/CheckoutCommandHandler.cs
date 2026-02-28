@@ -98,6 +98,9 @@ namespace Tickets.Application.Command.Checkout.Handlers
                     MaxScans = 1,
                     ScannedCount = 0,
                     QrToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N"),
+                    Faculty = request.Dto.Faculty,
+                    Department = request.Dto.Department,
+                    Year = request.Dto.Year,
                     CreatedBy = request.Dto.FullName
                 };
                 tickets.Add(ticket);

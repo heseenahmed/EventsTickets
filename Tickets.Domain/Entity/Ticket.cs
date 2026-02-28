@@ -29,6 +29,18 @@ namespace Tickets.Domain.Entity
 
         public string? AttendeeImageUrl { get; set; }
 
+        [Required]
+        [MaxLength(200)]
+        public string Faculty { get; set; } = null!; // كليه
+
+        [Required]
+        [MaxLength(200)]
+        public string Department { get; set; } = null!; // قسم
+
+        [Required]
+        [MaxLength(100)]
+        public string Year { get; set; } = null!; // فرقه
+
         public int VisitorCount { get; set; }
 
         public int MaxScans { get; set; } // VisitorCount + 1
