@@ -24,13 +24,21 @@ namespace Tickets.Controllers
         }
 
         [HttpPost("checkout")]
-        [AllowAnonymous] // Assuming checkout can be done by non-logged in users as well, or as per requirement
-        public async Task<ActionResult<APIResponse<List<string>>>> Checkout([FromForm] CheckoutRequestDto dto)
+        [AllowAnonymous] 
+        public async Task<ActionResult<APIResponse<Guid>>> Checkout([FromForm] CheckoutRequestDto dto)
         {
             var studentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             
             var result = await _mediator.Send(new CheckoutCommand(dto, studentId, baseUrl));
+            return StatusCode(result.ApiStatusCode, result);
+        }
+
+        [HttpPost("send-email/{ticketId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<APIResponse<bool>>> SendEmail(Guid ticketId)
+        {
+            var result = await _mediator.Send(new SendCheckoutEmailCommand(ticketId));
             return StatusCode(result.ApiStatusCode, result);
         }
 

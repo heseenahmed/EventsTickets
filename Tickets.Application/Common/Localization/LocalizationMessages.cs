@@ -126,6 +126,7 @@ namespace Tickets.Application.Common.Localization
         // Checkout & QR
         public const string NotEnoughTickets = "NotEnoughTickets";
         public const string CheckoutSuccessfulWithEmail = "CheckoutSuccessfulWithEmail";
+        public const string CheckoutSuccessful = "CheckoutSuccessful";
         public const string InvalidQrCode = "InvalidQrCode";
         public const string QrCodeLimitReached = "QrCodeLimitReached";
         public const string QrCodeValidatedSuccessfully = "QrCodeValidatedSuccessfully";

@@ -19,14 +19,9 @@ namespace Tickets.Application.DTOs.Checkout
         [EmailAddress]
         public string Email { get; set; } = null!;
 
-        [Required]
-        public string Faculty { get; set; } = null!;
-
-        [Required]
-        public string Department { get; set; } = null!;
-
-        [Required]
-        public string Year { get; set; } = null!;
+        public string? Faculty { get; set; }
+        public string? Department { get; set; }
+        public string? Year { get; set; }
 
         public int VisitorCount { get; set; }
         public decimal Price { get; set; }
@@ -45,9 +40,9 @@ namespace Tickets.Application.DTOs.Checkout
         public int ScannedCount { get; set; }
         public int RemainingScans => MaxScans - ScannedCount;
         public decimal TotalPrice { get; set; }
-        public string Faculty { get; set; } = null!;
-        public string Department { get; set; } = null!;
-        public string Year { get; set; } = null!;
+        public string? Faculty { get; set; }
+        public string? Department { get; set; }
+        public string? Year { get; set; }
         public string EventName { get; set; } = null!;
         public EventType EventType { get; set; }
     }

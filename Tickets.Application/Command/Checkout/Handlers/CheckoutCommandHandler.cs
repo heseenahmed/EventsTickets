@@ -14,40 +14,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tickets.Application.Command.Checkout.Handlers
 {
-    public class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, APIResponse<List<string>>>
+    public class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, APIResponse<Guid>>
     {
         private readonly IEventRepository _eventRepository;
         private readonly ITicketRepository _ticketRepository;
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _env;
         private readonly IAppLocalizer _localizer;
-        private readonly IEmailSender _emailSender;
-        private readonly MailSettings _mailSettings;
 
         public CheckoutCommandHandler(
             IEventRepository eventRepository,
             ITicketRepository ticketRepository,
             IUnitOfWork uow,
             IWebHostEnvironment env,
-            IAppLocalizer localizer,
-            IEmailSender emailSender,
-            IOptions<MailSettings> mailSettings)
+            IAppLocalizer localizer)
         {
             _eventRepository = eventRepository;
             _ticketRepository = ticketRepository;
             _uow = uow;
             _env = env;
             _localizer = localizer;
-            _emailSender = emailSender;
-            _mailSettings = mailSettings.Value;
         }
 
-        public async Task<APIResponse<List<string>>> Handle(CheckoutCommand request, CancellationToken cancellationToken)
+        public async Task<APIResponse<Guid>> Handle(CheckoutCommand request, CancellationToken cancellationToken)
         {
             var eventEntity = await _eventRepository.GetByGuidAsync(request.Dto.EventId);
             if (eventEntity == null)
             {
-                return APIResponse<List<string>>.Fail(404, null, _localizer[LocalizationMessages.NotFound]);
+                return APIResponse<Guid>.Fail(404, null, _localizer[LocalizationMessages.NotFound]);
             }
 
             // Rule: Each person has their own unique QR code.
@@ -56,7 +50,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
 
             if (eventEntity.NumberOfVisitorsAllowed > 0 && eventEntity.AvailableNumberOfVisitors < totalPeople)
             {
-                return APIResponse<List<string>>.Fail(400, null, _localizer[LocalizationMessages.NotEnoughTickets]);
+                return APIResponse<Guid>.Fail(400, null, _localizer[LocalizationMessages.NotEnoughTickets]);
             }
 
             // Prevent duplicate registration for the same event by email or phone
@@ -66,7 +60,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
 
             if (alreadyRegistered)
             {
-                return APIResponse<List<string>>.Fail(400, null, _localizer[LocalizationMessages.AlreadyRegistered]);
+                return APIResponse<Guid>.Fail(400, null, _localizer[LocalizationMessages.AlreadyRegistered]);
             }
 
             // Calculate Total Price
@@ -97,7 +91,6 @@ namespace Tickets.Application.Command.Checkout.Handlers
                     TotalPrice = i == 0 ? totalPrice : 0, // Assign price to first ticket only
                     MaxScans = 1,
                     ScannedCount = 0,
-                    QrToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N"),
                     Faculty = request.Dto.Faculty,
                     Department = request.Dto.Department,
                     Year = request.Dto.Year,
@@ -115,33 +108,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
             await _eventRepository.UpdateAsync(eventEntity);
             await _uow.CommitAsync();
 
-            try
-            {
-                var qrLinks = string.Join("<br/>", tickets.Select(t => $"<a href='https://tikcktat.vercel.app/qrcode/{t.QrToken}'>QR Code {tickets.IndexOf(t) + 1}</a>"));
-                
-                var subject = string.Format(_localizer[LocalizationMessages.EmailSubjectWelcome], eventEntity.Name);
-                var message = string.Format(_localizer[LocalizationMessages.EmailBodyWelcomeTemplate], eventEntity.Name, request.Dto.FullName, qrLinks, tickets.Count);
-
-                var recipientEmail = request.Dto.Email;
-
-                await _emailSender.SendEmailAsync(
-                    _mailSettings.Host,
-                    _mailSettings.Port,
-                    true,
-                    _mailSettings.Email,
-                    _mailSettings.Password,
-                    recipientEmail,
-                    subject,
-                    message,
-                    _mailSettings.DisplayName,
-                    _mailSettings.Email);
-            }
-            catch (Exception ex)
-            {
-                // Log exception if needed
-            }
-
-            return APIResponse<List<string>>.Success(tickets.Select(t => t.QrToken).ToList(), _localizer[LocalizationMessages.CheckoutSuccessfulWithEmail]);
+            return APIResponse<Guid>.Success(tickets[0].Id, _localizer[LocalizationMessages.CheckoutSuccessful]);
         }
     }
 }

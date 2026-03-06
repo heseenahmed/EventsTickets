@@ -81,7 +81,7 @@ namespace Tickets.Infra.Data
                 e.Property(x => x.AttendeeName).IsRequired().HasMaxLength(200);
                 e.Property(x => x.AttendeeEmail).IsRequired().HasMaxLength(200);
                 e.Property(x => x.AttendeePhone).IsRequired().HasMaxLength(20);
-                e.Property(x => x.QrToken).IsRequired().HasMaxLength(500);
+                e.Property(x => x.QrToken).HasMaxLength(500);
             });
 
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

@@ -29,17 +29,14 @@ namespace Tickets.Domain.Entity
 
         public string? AttendeeImageUrl { get; set; }
 
-        [Required]
         [MaxLength(200)]
-        public string Faculty { get; set; } = null!; // كليه
+        public string? Faculty { get; set; } // كليه
 
-        [Required]
         [MaxLength(200)]
-        public string Department { get; set; } = null!; // قسم
+        public string? Department { get; set; } // قسم
 
-        [Required]
         [MaxLength(100)]
-        public string Year { get; set; } = null!; // فرقه
+        public string? Year { get; set; } // فرقه
 
         public int VisitorCount { get; set; }
 
@@ -48,9 +45,8 @@ namespace Tickets.Domain.Entity
         public int ScannedCount { get; set; }
         public decimal TotalPrice { get; set; }
 
-        [Required]
         [MaxLength(500)]
-        public string QrToken { get; set; } = null!;
+        public string? QrToken { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

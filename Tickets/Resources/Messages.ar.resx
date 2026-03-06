@@ -433,4 +433,7 @@
   <data name="AlreadyRegistered" xml:space="preserve">
     <value>هذا المستخدم مسجل بالفعل في هذه الفعالية.</value>
   </data>
+  <data name="CheckoutSuccessful" xml:space="preserve">
+    <value>تمت عملية الحجز بنجاح. تم حجز تذكرتك.</value>
+  </data>
 </root>

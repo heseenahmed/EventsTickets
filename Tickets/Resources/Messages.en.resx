@@ -432,4 +432,7 @@
   <data name="AlreadyRegistered" xml:space="preserve">
     <value>This attendee is already registered for this event.</value>
   </data>
+  <data name="CheckoutSuccessful" xml:space="preserve">
+    <value>Checkout successful. Your ticket has been booked.</value>
+  </data>
 </root>
