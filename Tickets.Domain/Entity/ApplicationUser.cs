@@ -29,6 +29,7 @@ namespace Tickets.Domain.Entity
         public bool IsOTPEnabled { get; set; }
         public int NumberOfDependants { get; set; }
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; } = new List<ApplicationUserRole>();
+        public virtual ICollection<Event> OwnedEvents { get; set; } = new List<Event>();
     }
     public class ApplicationUserRole : IdentityUserRole<string>
     {

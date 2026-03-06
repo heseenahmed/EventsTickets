@@ -4,6 +4,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Tickets.Application.Common.Interfaces;
+using Tickets.Application.Common.Services;
+
 namespace Tickets.Application
 {
     public static class AppConfigureServices
@@ -16,6 +19,9 @@ namespace Tickets.Application
 
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            
+            services.AddScoped<IExcelService, ExcelService>();
+
             return services;
         }
     }

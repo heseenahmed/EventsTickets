@@ -113,5 +113,25 @@ namespace Tickets.Application.Common.Localization
         public const string EventDeletedSuccessfully = "EventDeletedSuccessfully";
         public const string EventRetrievedSuccessfully = "EventRetrievedSuccessfully";
         public const string EventsRetrievedSuccessfully = "EventsRetrievedSuccessfully";
+        public const string EventNotFound = "EventNotFound";
+        public const string FunDayEvent = "FunDayEvent";
+        public const string RamadanIftarEvent = "RamadanIftarEvent";
+
+        // Event Owner
+        public const string UserIsNotEventOwner = "UserIsNotEventOwner";
+        public const string EventAssignedToOwnerSuccessfully = "EventAssignedToOwnerSuccessfully";
+        public const string EventOwnersRetrievedSuccessfully = "EventOwnersRetrievedSuccessfully";
+        public const string EventsByOwnerRetrievedSuccessfully = "EventsByOwnerRetrievedSuccessfully";
+
+        // Checkout & QR
+        public const string NotEnoughTickets = "NotEnoughTickets";
+        public const string CheckoutSuccessfulWithEmail = "CheckoutSuccessfulWithEmail";
+        public const string CheckoutSuccessful = "CheckoutSuccessful";
+        public const string InvalidQrCode = "InvalidQrCode";
+        public const string QrCodeLimitReached = "QrCodeLimitReached";
+        public const string QrCodeValidatedSuccessfully = "QrCodeValidatedSuccessfully";
+        public const string AlreadyRegistered = "AlreadyRegistered";
+        public const string EmailSubjectWelcome = "EmailSubjectWelcome";
+        public const string EmailBodyWelcomeTemplate = "EmailBodyWelcomeTemplate";
     }
 }

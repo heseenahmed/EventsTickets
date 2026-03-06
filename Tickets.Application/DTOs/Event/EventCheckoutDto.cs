@@ -14,12 +14,11 @@ namespace Tickets.Application.DTOs.Event
         [Required]
         public string Phone { get; set; } = null!;
 
-        [Required]
         [EmailAddress]
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; }
 
         public int VisitorCount { get; set; }
-
+        public decimal Price { get; set; }
         public IFormFile? Photo { get; set; }
     }
 }

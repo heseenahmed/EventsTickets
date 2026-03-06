@@ -9,5 +9,7 @@ namespace Tickets.Application.DTOs.Identity
         [Phone]
         public string Mobile { get; set; } = null!;
         public string Password { get; set; } = null!;
+        [Required]
+        public string RoleId { get; set; } = null!;
     }
 }

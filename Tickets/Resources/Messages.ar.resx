@@ -363,4 +363,77 @@
   <data name="EventsRetrievedSuccessfully" xml:space="preserve">
     <value>تم استرجاع الفعاليات بنجاح.</value>
   </data>
+  <data name="UserIsNotEventOwner" xml:space="preserve">
+    <value>هذا المستخدم ليس منظم فعاليات.</value>
+  </data>
+  <data name="EventAssignedToOwnerSuccessfully" xml:space="preserve">
+    <value>تم تعيين الفعالية للمنظم بنجاح.</value>
+  </data>
+  <data name="EventOwnersRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع منظمي الفعاليات بنجاح.</value>
+  </data>
+  <data name="EventsByOwnerRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع فعاليات المنظم بنجاح.</value>
+  </data>
+  <data name="NotEnoughTickets" xml:space="preserve">
+    <value>لا يوجد عدد كافٍ من التذاكر المتاحة.</value>
+  </data>
+  <data name="CheckoutSuccessfulWithEmail" xml:space="preserve">
+    <value>تمت عملية الدفع بنجاح. تم إرسال بريد إلكتروني إليك يحتوي على رمز QR الخاص بك.</value>
+  </data>
+  <data name="InvalidQrCode" xml:space="preserve">
+    <value>رمز QR غير صالح.</value>
+  </data>
+  <data name="QrCodeLimitReached" xml:space="preserve">
+    <value>لقد وصل رمز QR إلى الحد الأقصى لعدد مرات المسح.</value>
+  </data>
+  <data name="QrCodeValidatedSuccessfully" xml:space="preserve">
+    <value>تم التحقق من رمز QR بنجاح.</value>
+  </data>
+  <data name="EmailSubjectWelcome" xml:space="preserve">
+    <value>مرحباً بك في {0}!</value>
+  </data>
+  <data name="EmailBodyWelcomeTemplate" xml:space="preserve">
+    <value>&lt;html&gt;
+&lt;body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; direction: rtl; text-align: right;'&gt;
+    &lt;div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;'&gt;
+        &lt;h1 style='color: #2c3e50;'&gt;مرحباً بك في {0}!&lt;/h1&gt;
+        &lt;p&gt;عزيزي &lt;strong&gt;{1}&lt;/strong&gt;،&lt;/p&gt;
+        &lt;p&gt;شكراً لاختيارك فعاليتنا. تم حجز &lt;strong&gt;{3}&lt;/strong&gt; تذاكر بنجاح.&lt;/p&gt;
+        
+        &lt;div style='background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffecb5; margin: 20px 0; border-radius: 5px;'&gt;
+            &lt;h3 style='margin-top: 0; color: #856404;'&gt;⚠️ تنبيه هام&lt;/h3&gt;
+            &lt;p style='margin-bottom: 0;'&gt;كل رمز QR صالح للاستخدام &lt;strong&gt;مرة واحدة فقط&lt;/strong&gt;. يرجى إبرازه عند البوابات لتسهيل الدخول.&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;h3&gt;🔗 رموز QR الخاصة بك:&lt;/h3&gt;
+        &lt;p&gt;{2}&lt;/p&gt;
+
+        &lt;hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'&gt;
+
+        &lt;h3 style='color: #2c3e50;'&gt;📜 تعليمات وقواعد هامة:&lt;/h3&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;strong&gt;المواعيد:&lt;/strong&gt; الدخول يبدأ من 2 ظهراً، وتنتهي الحفلة الساعة 8:30 مساءً إن شاء الله.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;المكان:&lt;/strong&gt; محمية وادي دجلة بالمعادي (&lt;a href='https://maps.app.goo.gl/HYbdQCFrCGrT6wq58'&gt;رابط الموقع&lt;/a&gt;).&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;التجهيزات الموصى بها:&lt;/strong&gt; ملابس ثقيلة، حذاء مريح، بنطلون احتياطي، باور بانك، وأدواتك الشخصية (سناكس ومياه).&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;استلام الهودي:&lt;/strong&gt; موعدنا الأربعاء من 5 إلى 8 مساءً في "Ebda3" بالدقي (&lt;a href='https://maps.app.goo.gl/jjJcTXm2KiYFDPDEA'&gt;رابط العنوان&lt;/a&gt;).&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;الوجبات:&lt;/strong&gt; تتوفر تذكرة وجبة اختيارية (ساندوتشين كفتة + طحينة) بـ 100 ج.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;ملاحظة:&lt;/strong&gt; المنظمون غير مسؤولين عن المتعلقات الشخصية.&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;نتمنى لك قضاء وقت ممتع!&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;#حفلة_سعيدة&lt;/strong&gt;&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="FunDayEvent" xml:space="preserve">
+    <value>يوم ترفيهي</value>
+  </data>
+  <data name="AlreadyRegistered" xml:space="preserve">
+    <value>هذا المستخدم مسجل بالفعل في هذه الفعالية.</value>
+  </data>
+  <data name="CheckoutSuccessful" xml:space="preserve">
+    <value>تمت عملية الحجز بنجاح. تم حجز تذكرتك.</value>
+  </data>
 </root>

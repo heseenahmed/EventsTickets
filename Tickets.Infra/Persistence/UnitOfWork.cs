@@ -1,6 +1,7 @@
 using Tickets.Application.Common.Interfaces;
 using Tickets.Infra.Data;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tickets.Infra.Persistence
 {
@@ -49,6 +50,12 @@ namespace Tickets.Infra.Persistence
                 _transaction?.Dispose();
                 _transaction = null;
             }
+        }
+
+        public async Task<T> ExecuteAsync<T>(Func<Task<T>> action)
+        {
+            var strategy = _context.Database.CreateExecutionStrategy();
+            return await strategy.ExecuteAsync(action);
         }
     }
 }

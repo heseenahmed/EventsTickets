@@ -1,5 +1,3 @@
-using DocumentFormat.OpenXml.Math;
-using Tickets.Domain.Entity;
 using Tickets.Domain.Entity;
 using Tickets.Infra.Configuration;
 using Microsoft.AspNetCore.Identity;
@@ -72,16 +70,28 @@ namespace Tickets.Infra.Data
                 e.Property(x => x.Name).IsRequired().HasMaxLength(200);
                 e.Property(x => x.Location).IsRequired().HasMaxLength(500);
                 e.Property(x => x.Price).HasColumnType("decimal(18,2)");
+                e.Property(x => x.VisitorFee).HasColumnType("decimal(18,2)");
+            });
+
+            builder.Entity<Ticket>(e =>
+            {
+                e.ToTable("Tickets");
+                e.HasKey(x => x.Id);
+                e.Property(x => x.TotalPrice).HasColumnType("decimal(18,2)");
+                e.Property(x => x.AttendeeName).IsRequired().HasMaxLength(200);
+                e.Property(x => x.AttendeeEmail).IsRequired().HasMaxLength(200);
+                e.Property(x => x.AttendeePhone).IsRequired().HasMaxLength(20);
+                e.Property(x => x.QrToken).HasMaxLength(500);
             });
 
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
         public virtual DbSet<Note> Note { get; set; }
         public virtual DbSet<Booking> Bookings { get; set; }
         public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
     }
 }

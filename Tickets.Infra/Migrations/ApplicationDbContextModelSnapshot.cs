@@ -376,6 +376,9 @@ namespace Tickets.Infra.Migrations
                     b.Property<int>("NumberOfVisitorsAllowed")
                         .HasColumnType("int");
 
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -391,7 +394,12 @@ namespace Tickets.Infra.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("VisitorFee")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Events", (string)null);
                 });
@@ -417,6 +425,90 @@ namespace Tickets.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Notes", (string)null);
+                });
+
+            modelBuilder.Entity("Tickets.Domain.Entity.Ticket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AttendeeEmail")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("AttendeeImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AttendeeName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("AttendeePhone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Department")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Faculty")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxScans")
+                        .HasColumnType("int");
+
+                    b.Property<string>("QrToken")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("ScannedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VisitorCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Year")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -492,6 +584,27 @@ namespace Tickets.Infra.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("Tickets.Domain.Entity.Event", b =>
+                {
+                    b.HasOne("Tickets.Domain.Entity.ApplicationUser", "Owner")
+                        .WithMany("OwnedEvents")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Tickets.Domain.Entity.Ticket", b =>
+                {
+                    b.HasOne("Tickets.Domain.Entity.Event", "Event")
+                        .WithMany("Tickets")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+                });
+
             modelBuilder.Entity("Tickets.Domain.Entity.ApplicationRole", b =>
                 {
                     b.Navigation("UserRoles");
@@ -499,7 +612,14 @@ namespace Tickets.Infra.Migrations
 
             modelBuilder.Entity("Tickets.Domain.Entity.ApplicationUser", b =>
                 {
+                    b.Navigation("OwnedEvents");
+
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Tickets.Domain.Entity.Event", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

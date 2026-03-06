@@ -3,6 +3,7 @@ using Tickets.API.Middlewares;
 using Tickets.Application;
 using Tickets.Domain.Entity;
 using Tickets.Infra;
+using Tickets.Infra.Data;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,17 @@ builder.Services.AddInfraServices(builder.Configuration, builder.Environment);
 builder.Services.AddAPIServices(builder.Configuration);
 
 var app = builder.Build();
+
+// Seed roles
+try
+{
+    await DbSeeder.SeedRolesAsync(app.Services);
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during role seeding. The app will continue to start.");
+}
 
 // Enable Swagger in all environments (including Production)
 app.UseSwagger();
