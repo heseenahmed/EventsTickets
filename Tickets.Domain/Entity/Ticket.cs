@@ -44,7 +44,7 @@ namespace Tickets.Domain.Entity
 
         public int ScannedCount { get; set; }
         public decimal TotalPrice { get; set; }
-
+        public bool IsPaid { get; set; }
         [MaxLength(500)]
         public string? QrToken { get; set; }
 

@@ -84,6 +84,47 @@ namespace Tickets.Infra.Data
                 e.Property(x => x.QrToken).HasMaxLength(500);
             });
 
+            builder.Entity<Order>(e =>
+            {
+                e.ToTable("Orders");
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+                e.Property(x => x.Currency).HasMaxLength(10).IsRequired();
+                e.Property(x => x.ReferenceType).HasMaxLength(100).IsRequired();
+                e.HasIndex(x => x.ReferenceId);
+                e.HasMany(x => x.PaymentAttempts).WithOne(x => x.Order).HasForeignKey(x => x.OrderId);
+            });
+
+            builder.Entity<PaymentAttempt>(e =>
+            {
+                e.ToTable("PaymentAttempts");
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+                e.Property(x => x.Currency).HasMaxLength(10).IsRequired();
+                e.Property(x => x.IdempotencyKey).HasMaxLength(200);
+                e.Property(x => x.PaymobIntentionId).HasMaxLength(200);
+                e.Property(x => x.PaymobTransactionId).HasMaxLength(200);
+                e.Property(x => x.PaymobOrderReference).HasMaxLength(200);
+                e.Property(x => x.MerchantOrderReference).HasMaxLength(200);
+
+                e.HasIndex(x => x.OrderId);
+                e.HasIndex(x => x.IdempotencyKey).IsUnique();
+                e.HasIndex(x => x.PaymobTransactionId);
+                e.HasIndex(x => x.PaymobIntentionId);
+                e.HasIndex(x => x.MerchantOrderReference);
+            });
+
+            builder.Entity<PaymentWebhookLog>(e =>
+            {
+                e.ToTable("PaymentWebhookLogs");
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Payload).IsRequired();
+                e.Property(x => x.Provider).HasMaxLength(50).IsRequired();
+                e.Property(x => x.ExternalEventId).HasMaxLength(200);
+                e.HasIndex(x => x.ExternalEventId);
+                e.HasIndex(x => x.PayloadHash);
+            });
+
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -93,5 +134,8 @@ namespace Tickets.Infra.Data
         public virtual DbSet<Booking> Bookings { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<PaymentAttempt> PaymentAttempts { get; set; }
+        public virtual DbSet<PaymentWebhookLog> PaymentWebhookLogs { get; set; }
     }
 }

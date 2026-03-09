@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Secret configuration files - NEVER push real credentials
+**/appsettings.Production.json
+**/appsettings.Development.json

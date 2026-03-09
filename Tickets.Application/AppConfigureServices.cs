@@ -21,6 +21,7 @@ namespace Tickets.Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             
             services.AddScoped<IExcelService, ExcelService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             return services;
         }

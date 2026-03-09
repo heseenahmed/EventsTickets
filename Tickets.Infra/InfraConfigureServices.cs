@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using QuestPDF.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Tickets.Application.Common.Models;
+using Tickets.Application.Common.Interfaces;
 namespace Tickets.Infra
 {
     public static class InfraConfigureServices
@@ -60,7 +62,16 @@ namespace Tickets.Infra
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IPaymentAttemptRepository, PaymentAttemptRepository>();
+            services.AddScoped<IPaymentWebhookLogRepository, PaymentWebhookLogRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Paymob
+            services.Configure<PaymobOptions>(configuration.GetSection(PaymobOptions.SectionName));
+            services.AddHttpClient<IPaymobClient, PaymobClient>();
+            services.AddScoped<IPaymobWebhookVerifier, PaymobWebhookVerifier>();
+
             return services;
         }
     }

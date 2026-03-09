@@ -89,6 +89,7 @@ namespace Tickets.Application.Command.Checkout.Handlers
                     AttendeeImageUrl = attendeeImageUrl,
                     VisitorCount = 0, // Individual ticket
                     TotalPrice = i == 0 ? totalPrice : 0, // Assign price to first ticket only
+                    IsPaid = false,
                     MaxScans = 1,
                     ScannedCount = 0,
                     Faculty = request.Dto.Faculty,

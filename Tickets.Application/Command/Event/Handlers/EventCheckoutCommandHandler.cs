@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tickets.Application.Command.Event.Handlers
 {
-    public class EventCheckoutCommandHandler : IRequestHandler<EventCheckoutCommand, APIResponse<bool>>
+    public class EventCheckoutCommandHandler : IRequestHandler<EventCheckoutCommand, APIResponse<Guid>>
     {
         private readonly IEventRepository _eventRepository;
         private readonly IBookingRepository _bookingRepository;
@@ -36,19 +36,19 @@ namespace Tickets.Application.Command.Event.Handlers
             _mailRepository = mailRepository;
         }
 
-        public async Task<APIResponse<bool>> Handle(EventCheckoutCommand request, CancellationToken cancellationToken)
+        public async Task<APIResponse<Guid>> Handle(EventCheckoutCommand request, CancellationToken cancellationToken)
         {
             var eventEntity = await _eventRepository.GetByGuidAsync(request.Dto.EventId);
             if (eventEntity == null)
             {
-                return APIResponse<bool>.Fail(404, null, _localizer[LocalizationMessages.NotFound]);
+                return APIResponse<Guid>.Fail(404, null, _localizer[LocalizationMessages.NotFound]);
             }
 
             int requiredVisitors = request.Dto.VisitorCount + 1; // Himself + visitors
 
             if (eventEntity.AvailableNumberOfVisitors < requiredVisitors)
             {
-                return APIResponse<bool>.Fail(400, null, "Not enough available tickets.");
+                return APIResponse<Guid>.Fail(400, null, "Not enough available tickets.");
             }
 
             // Prevent duplicate registration for the same event by email or phone
@@ -60,7 +60,7 @@ namespace Tickets.Application.Command.Event.Handlers
 
             if (alreadyRegistered)
             {
-                return APIResponse<bool>.Fail(400, null, _localizer[LocalizationMessages.AlreadyRegistered]);
+                return APIResponse<Guid>.Fail(400, null, _localizer[LocalizationMessages.AlreadyRegistered]);
             }
 
             string? attendeeImageUrl = null;
@@ -81,7 +81,7 @@ namespace Tickets.Application.Command.Event.Handlers
                 AttendeeImageUrl = attendeeImageUrl,
                 NumberOfVisitors = request.Dto.VisitorCount,
                 TotalPrice = eventEntity.Type == EventType.FunDayEvent ? request.Dto.Price : eventEntity.Price * requiredVisitors,
-                IsPaid = true,
+                IsPaid = false,
                 QrCodeData = Guid.NewGuid().ToString("N"),
                 MaxEntries = requiredVisitors,
                 CurrentEntries = 0,
@@ -107,7 +107,7 @@ namespace Tickets.Application.Command.Event.Handlers
                 await _mailRepository.SendEmailAsync("benzenydev@gmail.com", "Fun Day Event Checkout", body);
             }
 
-            return APIResponse<bool>.Success(true, "Checkout successful.");
+            return APIResponse<Guid>.Success(booking.Id, "Checkout successful.");
         }
     }
 }
