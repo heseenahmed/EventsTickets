@@ -48,7 +48,7 @@ namespace Tickets.Application.Common.Services
             _options = options.Value;
         }
 
-        public async Task<PaymentInitiationResult> InitiatePaymentAsync(Guid referenceId, string referenceType, decimal amount, string currency, string? userId)
+        public async Task<PaymentInitiationResult> InitiatePaymentAsync(Guid referenceId, string referenceType, decimal amount, string currency, string? userId, string? customerName = null, string? customerEmail = null, string? customerPhone = null)
         {
             // 1. Check if an order already exists for this reference
             var order = await _orderRepository.GetAllQueryable()
@@ -91,6 +91,7 @@ namespace Tickets.Application.Common.Services
             try
             {
                 // 3. Call Paymob API
+                var nameParts = (customerName ?? "Customer").Split(' ', 2);
                 var intentionRequest = new PaymobIntentionRequest
                 {
                     Amount = (long)(amount * 100), // Convert to cents
@@ -101,10 +102,10 @@ namespace Tickets.Application.Common.Services
                     RedirectionUrl = _options.ReturnUrl,
                     BillingData = new PaymobBillingData
                     {
-                        FirstName = "Customer",
-                        LastName = "NA",
-                        Email = "customer@example.com",
-                        PhoneNumber = userId ?? "NA"
+                        FirstName = nameParts[0],
+                        LastName = nameParts.Length > 1 ? nameParts[1] : "NA",
+                        Email = customerEmail ?? "NA",
+                        PhoneNumber = customerPhone ?? "NA"
                     }
                 };
 
@@ -141,7 +142,6 @@ namespace Tickets.Application.Common.Services
 
         public async Task<bool> ProcessCallbackAsync(string hmac, string rawPayload)
         {
-            // 1. Log webhook
             var log = new PaymentWebhookLog
             {
                 Id = Guid.NewGuid(),
@@ -149,10 +149,10 @@ namespace Tickets.Application.Common.Services
                 SignatureOrHmac = hmac,
                 CreatedBy = "PaymobWebhook"
             };
+
             await _webhookLogRepository.AddAsync(log);
             await _uow.CommitAsync();
 
-            // 2. Verify HMAC
             if (!_verifier.VerifyHmac(rawPayload, hmac))
             {
                 log.IsVerified = false;
@@ -166,27 +166,29 @@ namespace Tickets.Application.Common.Services
 
             try
             {
-                // 3. Parse payload
                 var root = JsonDocument.Parse(rawPayload).RootElement;
                 var obj = root.GetProperty("obj");
+
                 var success = obj.GetProperty("success").GetBoolean();
                 var pending = obj.GetProperty("pending").GetBoolean();
-                
+
                 string? intentionId = null;
                 if (obj.TryGetProperty("intention_id", out var intentionElement))
                 {
-                    intentionId = intentionElement.GetString();
+                    intentionId = intentionElement.ToString();
                 }
 
-                if (string.IsNullOrEmpty(intentionId))
+                _logger.LogInformation("Paymob webhook parsed. Success={Success}, Pending={Pending}, IntentionId={IntentionId}",
+                    success, pending, intentionId);
+
+                if (string.IsNullOrWhiteSpace(intentionId))
                 {
                     log.ProcessingStatus = "IntentionIdMissing";
                     await _webhookLogRepository.UpdateAsync(log);
                     await _uow.CommitAsync();
                     return true;
                 }
-                
-                // Find attempt
+
                 var attempt = await _attemptRepository.GetAllQueryable()
                     .FirstOrDefaultAsync(a => a.PaymobIntentionId == intentionId);
 
@@ -206,34 +208,69 @@ namespace Tickets.Application.Common.Services
                     return true;
                 }
 
-                // 4. Update statuses
-                attempt.PaymobTransactionId = obj.GetProperty("id").GetRawText();
+                var order = await _orderRepository.GetByGuidAsync(attempt.OrderId);
+                if (order == null)
+                {
+                    log.ProcessingStatus = "OrderNotFound";
+                    await _webhookLogRepository.UpdateAsync(log);
+                    await _uow.CommitAsync();
+                    return true;
+                }
+
+                attempt.PaymobTransactionId = obj.TryGetProperty("id", out var txIdElement)
+                    ? txIdElement.ToString()
+                    : null;
+
                 attempt.CallbackReceivedAt = DateTime.UtcNow;
                 attempt.RawWebhookJson = rawPayload;
 
-                var order = await _orderRepository.GetByGuidAsync(attempt.OrderId);
+                var isFinalSuccess = success && !pending;
+                var isFinalFailure = !success && !pending;
 
-                if (success)
+                if (isFinalSuccess)
                 {
                     attempt.Status = PaymentAttemptStatus.Success;
                     attempt.IsFinal = true;
+                    attempt.LastGatewayStatus = "Success";
+
                     order.Status = PaymentStatus.Paid;
                     order.PaidAt = DateTime.UtcNow;
 
+                    _logger.LogInformation("Before finalizing order. OrderId={OrderId}, Status={Status}, ReferenceType={ReferenceType}, ReferenceId={ReferenceId}",
+                        order.Id, order.Status, order.ReferenceType, order.ReferenceId);
+
                     await FinalizeBusinessOrderAsync(order);
+
+                    await _orderRepository.UpdateAsync(order);
+
+                    _logger.LogInformation("Order marked as paid. OrderId={OrderId}", order.Id);
                 }
-                else if (!pending)
+                else if (isFinalFailure)
                 {
                     attempt.Status = PaymentAttemptStatus.Failed;
                     attempt.IsFinal = true;
+                    attempt.LastGatewayStatus = "Failed";
+                    attempt.FailureMessage = "Payment failed from Paymob callback";
+
+                    order.Status = PaymentStatus.Failed;
+                    await _orderRepository.UpdateAsync(order);
+
+                    _logger.LogInformation("Order marked as failed. OrderId={OrderId}", order.Id);
+                }
+                else
+                {
+                    attempt.Status = PaymentAttemptStatus.Pending;
+                    attempt.LastGatewayStatus = "Pending";
+
+                    _logger.LogInformation("Payment still pending. OrderId={OrderId}", order.Id);
                 }
 
                 await _attemptRepository.UpdateAsync(attempt);
-                await _orderRepository.UpdateAsync(order);
-                
+
                 log.ProcessingStatus = "Success";
                 log.ProcessedAt = DateTime.UtcNow;
                 await _webhookLogRepository.UpdateAsync(log);
+
                 await _uow.CommitAsync();
 
                 return true;
@@ -269,23 +306,40 @@ namespace Tickets.Application.Common.Services
 
         private async Task FinalizeBusinessOrderAsync(Order order)
         {
-            if (order.ReferenceType == "Booking")
+            _logger.LogInformation("FinalizeBusinessOrderAsync started. OrderId={OrderId}, ReferenceType={ReferenceType}, ReferenceId={ReferenceId}",
+                order.Id, order.ReferenceType, order.ReferenceId);
+
+            if (string.Equals(order.ReferenceType, "Booking", StringComparison.OrdinalIgnoreCase))
             {
                 var booking = await _bookingRepository.GetByGuidAsync(order.ReferenceId);
                 if (booking != null)
                 {
                     booking.IsPaid = true;
                     await _bookingRepository.UpdateAsync(booking);
+                    _logger.LogInformation("Booking marked as paid. BookingId={BookingId}", booking.Id);
+                }
+                else
+                {
+                    _logger.LogWarning("Booking not found. ReferenceId={ReferenceId}", order.ReferenceId);
                 }
             }
-            else if (order.ReferenceType == "Ticket")
+            else if (string.Equals(order.ReferenceType, "Ticket", StringComparison.OrdinalIgnoreCase))
             {
                 var ticket = await _ticketRepository.GetByGuidAsync(order.ReferenceId);
                 if (ticket != null)
                 {
                     ticket.IsPaid = true;
                     await _ticketRepository.UpdateAsync(ticket);
+                    _logger.LogInformation("Ticket marked as paid. TicketId={TicketId}", ticket.Id);
                 }
+                else
+                {
+                    _logger.LogWarning("Ticket not found. ReferenceId={ReferenceId}", order.ReferenceId);
+                }
+            }
+            else
+            {
+                _logger.LogWarning("Unknown ReferenceType={ReferenceType} for OrderId={OrderId}", order.ReferenceType, order.Id);
             }
         }
     }

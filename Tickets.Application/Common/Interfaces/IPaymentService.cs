@@ -5,7 +5,7 @@ namespace Tickets.Application.Common.Interfaces
 {
     public interface IPaymentService
     {
-        Task<PaymentInitiationResult> InitiatePaymentAsync(Guid referenceId, string referenceType, decimal amount, string currency, string? userId);
+        Task<PaymentInitiationResult> InitiatePaymentAsync(Guid referenceId, string referenceType, decimal amount, string currency, string? userId, string? customerName = null, string? customerEmail = null, string? customerPhone = null);
         Task<bool> ProcessCallbackAsync(string hmac, string rawPayload);
         Task<PaymentStatusResponse> GetPaymentStatusAsync(Guid referenceId, string referenceType);
     }

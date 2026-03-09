@@ -23,6 +23,15 @@ namespace Tickets.Controllers
         {
         }
 
+        [HttpGet("my-checkouts")]
+        [Authorize]
+        public async Task<ActionResult<APIResponse<List<MyCheckoutDto>>>> GetMyCheckouts()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetMyCheckoutsQuery(userId!));
+            return StatusCode(result.ApiStatusCode, result);
+        }
+
         [HttpPost("checkout")]
         [AllowAnonymous] 
         public async Task<ActionResult<APIResponse<Guid>>> Checkout([FromForm] CheckoutRequestDto dto)

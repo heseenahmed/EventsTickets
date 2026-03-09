@@ -4,5 +4,5 @@ using Tickets.Application.DTOs;
 
 namespace Tickets.Application.Command.Event
 {
-    public record EventCheckoutCommand(EventCheckoutDto Dto, string? StudentId, string BaseUrl) : IRequest<APIResponse<Guid>>;
+    public record EventCheckoutCommand(EventCheckoutDto Dto, string? StudentId, string BaseUrl) : IRequest<APIResponse<EventCheckoutResponseDto>>;
 }
